@@ -16,6 +16,7 @@ body{
 .container-full{
     margin:auto;
     width:100%;
+	padding:10px 0px;
 
 }
 .content{
@@ -288,6 +289,7 @@ li.dropdown{
 	border: 1px solid #B9B6B6;
 	border-radius: 3px;
 	min-width:10px;
+	margin:10px 0px;
 }
 .card-footer, .card-header{
      padding: 10px 30px;
