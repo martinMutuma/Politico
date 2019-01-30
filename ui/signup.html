@@ -42,7 +42,24 @@
             </div>
         </header>
         <main class="content">
-            <div class="container">
+            <div class="container signup">
+			  <div class="flex-row">
+				<div class="card signup-side">
+					<div class="card-header bg-dark">
+					 <span class="bland-logo">
+                            Political
+                        </span>
+					</div>
+					<div class="card-body">
+					 <h2> Registration procedure</h2>
+						<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eros lorem, pulvinar ac pellentesque eget, fringilla vitae risus. Sed vitae malesuada nunc. Suspendisse efficitur ut massa eget bibendum. Sed ornare eros vitae massa condimentum euismod.
+						</p> 
+						<h2> Requirements</h2>
+						<p>Vivamus lobortis cursus magna at porttitor. In nisl magna, posuere nec malesuada vel, sagittis in tortor. Donec porttitor, velit vehicula iaculis pretium, ligula odio tincidunt eros, et condimentum nunc dolor eget lorem. Nam tincidunt posuere arcu. Donec tempor, lorem a ullamcorper convallis, nisl felis imperdiet purus, vitae luctus mi nisl et diam. Vivamus euismod lorem sed magna hendrerit lacinia. Duis dictum suscipit dui, sed convallis quam sagittis eget. 
+						</p>
+					</div>
+				</div>
                 <div class="card">
 					<div class="card-header">
 					signup
@@ -50,14 +67,26 @@
 					<div class="card-body">
                     
                     <form class="form-v1">
-						
+						<div>
+                            <lable>Full Name</lable>
+                            <input type="text" placeholder="Full Name" name="fullname" required>
+                        </div>
+						<div>
+						   <lable>National ID Number</lable>
+                            <input type="number" placeholder="ID Number" name="idNo" required>
+                        </div>
                         <div class="form-control">
                             <lable>Email</lable>
                             <input type="email" placeholder="email" name="email" required>
                         </div>
+						 
                         <div>
                             <lable>Password</lable>
                             <input type="password" placeholder="Password" name="password" required>
+                        </div>
+						<div>
+                            <lable>Confirm Password</lable>
+                            <input type="password" placeholder="Confirm Password" name="password" required>
                         </div>
                         <div class="pull-right">
                             <button class="button bg-teal hover-outline-blue">Submit</button>
@@ -69,6 +98,7 @@
 					<a href="login.html">Login</a>
 					</div>
                 </div>
+					</div>
             </div>
         </main>
         <footer class="bg-dark">
