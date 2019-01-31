@@ -20,7 +20,7 @@ body{
 
 }
 .content{
-    min-height: 100px;
+    min-height: 50vh !important;
 
 }
 
@@ -281,6 +281,11 @@ li.dropdown{
 
 }
 
+.pass-reset{
+	margin:5% auto !important;
+    width: 40%;
+}
+
 /*card*/
 
 .card{
@@ -335,3 +340,31 @@ border-top: 1px solid #B9B6B6;
 /*	min-height: 29px;*/
 }
 
+.alert {
+  padding: 2px 8px;
+  background-color: #eff4ff; 
+	color: #494848;
+  margin-bottom: 10px;
+	border-radius: 4px;
+	text-align: center;
+}
+
+.bg-info{
+	background-color: #0392cf !important; 
+	color: #eff4ff !important;
+}
+.bg-success{
+	background-color: #7bc043 !important; 
+	color: #eff4ff !important;
+}
+.bg-error{
+	background-color: #ee4035 !important; 
+	color: #eff4ff !important;
+}
+.bg-warning{
+	background-color: #ee4035 !important; 
+	color: #f37736 !important;
+}
+.hide-me{
+	display:none;
+}
