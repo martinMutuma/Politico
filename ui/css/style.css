@@ -16,6 +16,7 @@ body{
 .container-full{
     margin:auto;
     width:100%;
+	padding:10px 0px;
 
 }
 .content{
@@ -268,7 +269,7 @@ li.dropdown{
 
 /*login*/
 .login-card{
-	margin:5% auto;
+	margin:5% auto !important;
     width: 30%;
     background: #d4d7d9;
 
@@ -288,6 +289,7 @@ li.dropdown{
 	border: 1px solid #B9B6B6;
 	border-radius: 3px;
 	min-width:10px;
+	margin:10px 0px;
 }
 .card-footer, .card-header{
      padding: 10px 30px;
@@ -312,5 +314,24 @@ border-top: 1px solid #B9B6B6;
 	text-decoration: none;
 	text-align: center;
 	
+}
+
+/*flex*/
+.flex-row{
+	display: flex;
+	flex-direction: row;
+	justify-content:center;
+}
+
+.signup-side{
+	background-color: #eff4ff !important;
+	flex-basis:40%;
+	overflow: hidden;
+}
+
+.signup .card-header{
+	font-size: 25px;
+	
+/*	min-height: 29px;*/
 }
 
