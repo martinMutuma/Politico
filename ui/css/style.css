@@ -86,6 +86,7 @@ input[type=file]{
     display: inline-block;
     font-size: 16px;
     border-radius: 3px;
+	margin-right:5px;
 }
 .hover-outline-blue:hover {
     border-radius: 2px;
@@ -269,7 +270,7 @@ li.dropdown {
     border-bottom: 1px solid #B9B6B6;
 }
 .card-body {
-    padding: 2.5%;
+    padding: 2%;
     flex: 1 1 auto;
 }
 .card-footer {
@@ -357,6 +358,8 @@ li.dropdown {
 .action-panel {
     display: flex;
     flex-direction: row;
+	justify-content: flex-end;
+	
     align-items: flex-end;
     width: 100%;
     /*
@@ -386,4 +389,27 @@ li.dropdown {
 }
 .required{
 	color: #ee4035 !important;
+}
+
+.modal {
+  position: fixed;	
+left: 0;
+  top: 0;
+  display: none;
+  z-index: 1; 
+  padding-top: 10%; 
+  width: 100%; 
+  height: 100%; 
+  background-color: #000000; 
+  background-color: rgba(0,0,0,0.9);
+
+	overflow: auto; 
+}
+.modal-body {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #888;
+  width: 50%;
+	
 }
