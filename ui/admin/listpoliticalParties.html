@@ -31,26 +31,61 @@
       <div class="admin-content">
         <div class="action-panel"> <a class="button bg-success pull-right" href="addparty.html">+New party </a> </div>
         <div class="card">
-          <table class="table table-stripped">
-            <tr>
-				<th>Reg no </th>
-              <th>Party Name </th>
-              <th>Number of members</th>
-              <th>Action</th>
-            </tr>
-            <tr>
-				<td>#5656776</td>
-              <td>Party A that is very long we see fitting </td>
-              <td>Party b</td>
-              <td><a class="button bg-info">View</a> <a class="button bg-warning" href="editParty.html">Edit</a> <a class="button bg-error">Delete</a></td>
-            </tr>
-            <tr>
-				<td>#5656776</td>
-              <td>Party A that is very long we see fitting </td>
-              <td>Party b</td>
-              <td c><a class="button bg-info">View</a> <a class="button bg-warning" href="editParty.html">Edit</a> <a class="button bg-error">Delete</a></td>
-            </tr>
-          </table>
+          <div class="card-body">
+            <table class="table table-stripped">
+              <tr>
+                <th>Reg no </th>
+                <th>Party Name </th>
+                <th>Number of members</th>
+                <th>Action</th>
+              </tr>
+              <tr>
+                <td>#5656776</td>
+                <td>Party A that is very long we see fitting </td>
+                <td>Party b</td>
+                <td><a class="button bg-info">View</a> <a class="button bg-warning" href="editParty.html">Edit</a> <a class="button bg-error" onClick="modal_show('confirm-delete')">Delete</a></td>
+              </tr>
+              <tr>
+                <td>#5656776</td>
+                <td>Party A that is very long we see fitting </td>
+                <td>Party b</td>
+                <td c><a class="button bg-info">View</a> <a class="button bg-warning" href="editParty.html">Edit</a> <a class="button bg-error" onClick="modal_show('confirm-delete')">Delete</a></td>
+              </tr>
+            </table>
+            <div class="modal" id="confirm-delete">
+              <div class="modal-body">
+                 
+				   <div class="clear-both"></div>
+                  <div class="alert bg-error">
+                 
+                    <p> Are you sure?</p>
+                  </div>
+				 <div class="action-panel">
+					 <button class="button bg-warning pull-right" onClick="modal_hide('confirm-delete')">Close</button>
+                  <button class="button bg-error" onClick="modal_show('success-delete', 'confirm-delete')">Confirm delete</button> 
+					 </div>
+					 <div class="clear-both"></div>
+                </div>
+             
+            </div>
+          
+			<div class="modal" id="success-delete">
+              <div class="modal-body">
+                 
+				   <div class="clear-both"></div>
+                  <div class="alert bg-success">
+                 
+                    <p> Party deleted</p>
+                  </div>
+				 <div class="action-panel">
+					 <button class="button bg-warning pull-right" onClick="modal_hide('success-delete')">Close</button>
+                  
+					 </div>
+					 <div class="clear-both"></div>
+                </div>
+             
+            </div>
+			</div>
         </div>
       </div>
     </div>
@@ -61,5 +96,6 @@
     <p> &copy;Martin 2018</p>
   </div>
 </footer>
+<script src="../js/app.js" type="text/javascript" ></script>
 </body>
 </html>
