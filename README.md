@@ -1,5 +1,6 @@
 # Politico
-	[updated](https://img.shields.io/eclipse-marketplace/last-update/:name.svg)
+	![](https://img.shields.io/github/last-commit/martinMutuma/Politico.svg?style=flat) ![](https://img.shields.io/github/languages/top/martinMutuma/Politico.svg?style=flat) ![](https://img.shields.io/github/languages/count/martinMutuma/Politico.svg?style=flat)
+	![](https://img.shields.io/github/languages/code-size/martinMutuma/Politico.svg?style=flat)
 
 ## Required Features
 1. Users can sign up.
