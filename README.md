@@ -1,6 +1,6 @@
 # Politico
-	[![lastcommit](https://img.shields.io/github/last-commit/martinMutuma/Politico.svg?style=flat)]
-	![](https://img.shields.io/github/languages/top/martinMutuma/Politico.svg?style=flat) ![](https://img.shields.io/github/languages/count/martinMutuma/Politico.svg?style=flat)
+![lastcommit](https://img.shields.io/github/last-commit/martinMutuma/Politico.svg?style=flat)
+	![top language](https://img.shields.io/github/languages/top/martinMutuma/Politico.svg?style=flat) ![](https://img.shields.io/github/languages/count/martinMutuma/Politico.svg?style=flat)
 	![](https://img.shields.io/github/languages/code-size/martinMutuma/Politico.svg?style=flat)
 
 ## Required Features
