@@ -54,13 +54,18 @@ input,textarea {
     box-sizing: border-box;
 }
 input[type=checkbox]{
-
+padding: 0;
   height: 20px;
   width: 20px;
   background-color: #eee;
+	
 }
-
+input[type=file]{
+	border: none !important;
+	width:80%;
+}
 .form-v1 .form-control {
+	
 }
 .img {
     width: 100%;
@@ -361,6 +366,11 @@ li.dropdown {
     min-width: 10px;
     margin: 3px 0px;
 }
+.flex-row-no-wrap{
+	display: flex;
+    flex-direction: row;
+	flex-wrap: nowrap;
+}
 .form-2col {
     display: flex;
     flex-direction: row;
@@ -373,4 +383,7 @@ li.dropdown {
 }
 .control-col-1 {
     width:96%;
+}
+.required{
+	color: #ee4035 !important;
 }
