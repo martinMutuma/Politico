@@ -80,7 +80,7 @@ input {
     background-color: #ccc; /* Green */
     border: none;
     color: white;
-    padding: 10px 32px;
+    padding: 5px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -232,7 +232,9 @@ li.dropdown{
     grid-template-columns: 20% 80%;
     border:#6a757a 1px solid;
 } 
-
+.admin-content{
+	padding:5px;
+}
 .sidebar{
     height:100%;
     background: #222e34;
@@ -250,7 +252,7 @@ li.dropdown{
 
 
 .sidebar a.active {
-    background-color: #FF8F00;
+    background-color: #F37736;
     color: #fff;
 }
 
@@ -362,9 +364,54 @@ border-top: 1px solid #B9B6B6;
 	color: #eff4ff !important;
 }
 .bg-warning{
-	background-color: #ee4035 !important; 
-	color: #f37736 !important;
+	background-color: #f37736 !important; 
+	color: #eff4ff !important;
 }
 .hide-me{
 	display:none;
+}
+
+.table {
+	
+	background-color: #eff4ff;
+	width:100%;
+	 border-spacing: 5px;
+	
+}
+.table td{
+	color:#494848;
+}
+.table th, .table td{
+ padding: 5px;
+}
+.table th {
+	 text-align: left;
+}
+
+.table, .table th , .table td{
+ border: 1px solid #727272;
+border-collapse: collapse;
+}
+.table-stripped tr:nth-child(even) {
+  background-color: #eee !important;
+}
+.table-stripped tr:nth-child(odd) {
+ background-color: #fff !important ;
+}
+ .table-stripped  th {
+  background-color: #727272;
+  color: white;
+}
+
+.action-panel{
+	display: flex;
+	flex-direction:row;
+	align-items:flex-end;
+	width:100%;
+/*
+	border: 1px solid #B9B6B6;
+	border-radius: 3px;
+*/
+	min-width:10px;
+	margin:3px 0px;
 }
