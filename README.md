@@ -1,5 +1,5 @@
 # Politico
-	https://img.shields.io/eclipse-marketplace/last-update/:name.svg
+	(https://img.shields.io/eclipse-marketplace/last-update/:name.svg)
 
 ## Required Features
 1. Users can sign up.
