@@ -12,7 +12,7 @@
 <header class="top-navbar bg-dark">
   <div class="container">
     <div class="bland"> <a href="index.html"> <span class="bland-logo"> Political </span> </a> </div>
-     <nav>
+    <nav>
                     <ul>
                         <li><a href="index.html">&#10224; Home</a></li>
                           <li><a  href="viewAllpoliticalparties.html">Political parties</a></li>
@@ -20,7 +20,7 @@
                         
                         <li><a href="vote.html">Vote</a></li>
 
-                        <li class="dropdown">
+                        <li class="dropdown active">
                             <a href="profile.html">&#9786;Profile &#8681;</a>
 
                             <ul class="">
@@ -46,54 +46,41 @@
 				 <p>ID:6938992</p>
 				 <p>phone:693899255</p>
             </div>
+              <div class="profile-menu">
+               <div class="sidebar bg-light front-sidebar">
+              <a href="profile.html">My info</a>
+      
+              <a  class="active" href="myvotes.html">My votes</a>
+            
+             
+            </div>
+              </div>
             </div>
           </div>
         </div>
      
       <div class="flex-col-9" >
         <div class="card">
-          <div class="card-header bg-info"> &#x2756; Declare Candidature </div>
+          <div class="card-header bg-dark"> &#x2756; My votes </div>
           <div class="card-body bg-light">
-            <form class="form-2col">
-              <div class="control-col-2">
-                <label>Political party <span class="required">&#8270;</span></label>
-                <select  required>
-				  
-				  <option>select</option>
-					 <option>Party A</option>
-					 <option>Party A</option>
-				  </select>
-              </div>
-              <div class="control-col-2">
-                <label>Juridiction<span class="required">&#8270;</span></label>
-                <select  required>
-				  <option>select</option>
-					 <option>Kwetu</option>
-					 <option>Kwao </option>
-				   <option>Kule </option>
-				  </select>
-              </div>
-              <div class="control-col-2">
-                <label>Government position <span class="required">&#8270;</span></label>
-               <select  required>
-				   <option>select</option>
-					 <option>Mheshimiwa 1 </option>
-				   <option>Mheshimiwa 2 </option>
-				   <option>Mheshimiwa 3 </option>
-				  </select>
-              </div>
-              
-              
-              <div class="control-col-2">
-                <label> Photo to use on vote card <span class="required">&#8270;</span></label>
-                <input type="file">
-              </div>
-              <div class="control-col-1">
-                <label> Descripion(To appear on candidates page) <span class="required">&#8270;</span></label>
-                <textarea placeholder="Descripion" rows="10"></textarea>
-              </div>
-              <div class="action-panel control-col-1"> <a  href="listpoliticalParties.html" class="button bg-success">Save</a> </div>
-            </form>
+         
+               <table class="table table-stripped" >
+                   <tr>
+                       <th>Political seat</th>
+                       <th>candidate</th>
+                       <th>Party</th>
+                   </tr>
+               <tr>
+                   <td>chairman</td>
+                   <td>Mellisa</td>
+      <td>Party a</td>
+                   </tr>
+                  <tr>
+                   <td>Group Admin</td>
+                   <td>Joy</td>
+      <td>Party c</td>
+                   </tr>
+               </table>
           </div>
         </div>
       </div>
