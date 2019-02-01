@@ -44,7 +44,7 @@ ul {
 .bg-teal {
     background-color: #00aba9 !important;
 }
-input,textarea {
+input,textarea,select {
     border: 1px solid #ccc;
     width: 100%;
     padding: 12px 20px;
@@ -128,14 +128,14 @@ input[type=file]{
 .top-navbar li {
     list-style: none;
     display: inline;
-    padding: 14px 16px;
-    border-radius: 3px 3px 0px 0px;
+    padding: 14px 12px;
+    border-radius: 3px 3px 0 0;
     float: left;
 }
 .top-navbar a {
     text-decoration: none;
     color: #ccc;
-    font-size: 14px;
+    font-size: 12px;
     text-transform: uppercase;
 }
 .top-navbar li:hover {
@@ -151,7 +151,7 @@ input[type=file]{
 }
 .top-navbar nav {
     flex: auto;
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
 }
 .dropdown {
 }
@@ -389,6 +389,12 @@ li.dropdown {
 .control-col-1 {
     width:96%;
 }
+.flex-col-3{
+	width:29%;
+}
+.flex-col-9{
+	width:69%;
+}
 .required{
 	color: #ee4035 !important;
 }
@@ -414,4 +420,13 @@ left: 0;
   border: 1px solid #888;
   width: 50%;
 	
+}
+.profile-info{
+	text-align: center;
+}
+.profile-info h2{
+	font-weight: 400;
+}
+.profile-info p{
+	color: grey;
 }
