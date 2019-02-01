@@ -376,6 +376,11 @@ li.dropdown {
 	align-content: flex-start;
 	justify-content: flex-start;
 }
+.flex-colum{
+	display: flex;
+    flex-direction: column;
+
+}
 .form-2col {
     display: flex;
     flex-direction: row;
@@ -429,4 +434,44 @@ left: 0;
 }
 .profile-info p{
 	color: grey;
+}
+.party-view-all{
+	
+}
+.party-logo{
+	
+}
+.party-img{
+max-width:100%;
+ max-height:200px;
+  width: auto;
+  height: auto;
+	margin: auto;
+}
+.party-detail h2{
+	font-weight: 500;
+	 margin-bottom: 0;
+    border-bottom: 1px solid #B9B6B6;
+}
+.pagination{
+	padding: 5px;
+	margin:5px;
+}
+.pagination a {
+color: inherit;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+
+.pagination a.active {
+  border: 1px solid #0392cf;
+  
+}
+
+.pagination a:hover:not(.active) {
+	background-color: #2B3A42;
+	color: #eff4ff
 }
