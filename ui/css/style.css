@@ -294,7 +294,7 @@ li.dropdown {
 .flex-row {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
 }
 .signup-side {
     background-color: #eff4ff !important;
@@ -366,6 +366,7 @@ li.dropdown {
     background-color: #727272;
     color: white;
 }
+
 .action-panel {
     display: flex;
     flex-direction: row;
@@ -410,6 +411,9 @@ li.dropdown {
 }
 .flex-col-4{
 	width:39%;
+}
+.flex-col-6{
+	width:49%;
 }
 .flex-col-9{
 	width:69%;
@@ -528,5 +532,23 @@ color: inherit;
     border-bottom: 1px solid #C0C0C0;
     border-collapse: collapse;
 }
-
+.bg-image { 
+ 
+  background-image: url("../images/infinum-zagreb-office-4.jpg");
+  height: 50vh; 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.bg-image span{
+    background-color: #2B3A42;
+    color:white;
+    text-align: center;
+    text-transform: uppercase;
+    margin: auto;
+    top:50%;
+    font-size: 25px;
+    letter-spacing: 5px;
+        
+}
 
