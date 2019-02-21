@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href='https://fonts.googleapis.com/css?family=Alegreya SC' rel='stylesheet'>
+<link rel="stylesheet" href="../css/style.css">
+<title>Political|Home</title>
+</head>
+<body>
+<header class="top-navbar bg-dark">
+  <div class="container">
+    <div class="bland"> <a href="../index.html"> <span class="bland-logo"> Political </span> </a> </div>
+    <nav >
+      <ul class="admin-nav">
+        <li class="dropdown"> <a href="">Account</a>
+          <ul class="">
+            <li><a href="logout.html">logout</a></li>
+          </ul>
+        </li>
+        <li class="dropdown"> </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="content">
+  <div class="container-full">
+    <div class="admin-grid">
+      <div class="sidebar"> <a class="" href="#home">Home</a> 
+		  <a class="active" href="listpoliticalParties.html">Parties</a>   <a href="addpoliticaloffice.html">&plus;Political office</a><a href="#contact">Contact</a> <a href="#about">About</a> </div>
+      <div class="admin-content">
+        <div class="action-panel"> <a class="button bg-warning" href="listpoliticalParties.html">&#x21D0 Back to all </a> </div>
+        <div class="card">
+        <div class="card-header">
+			&#8258 Add new party
+		</div>
+			<div class="card-body bg-light">
+				<form class="form-2col">
+			 <div class="control-col-2">
+					<label>Name of party <span class="required">&#8270;</span></label>
+				 <input type="text" placeholder="Name of party" required>
+					</div> 
+				<div class="control-col-2">
+					<label>Registration Number <span class="required">&#8270;</span></label>
+				 <input type="text" placeholder="Registration Number" required>
+					</div>
+					<div class="control-col-2">
+					<label>Address <span class="required">&#8270;</span></label>
+				 <input type="text" placeholder="Address" required>
+					</div> 
+				<div class="control-col-2">
+					<label>Phone Number <span class="required">&#8270;</span></label>
+				 <input type="text" placeholder="Phone Number" required>
+					</div>
+					<div class="control-col-2">
+					 <input type="checkbox">Registration fees paid<span class="required">&#8270;</span>
+					</div>
+					<div class="control-col-2">
+						<label> Upload party constitution <span class="required">&#8270;</span></label>
+						<input type="file">
+					</div>
+					
+					<div class="control-col-1">
+						
+						<label> Party Bio <span class="required">&#8270;</span></label>
+						<textarea placeholder="Bio" rows="10"></textarea>
+					</div>
+					<div class="action-panel control-col-1">
+					<a  href="listpoliticalParties.html" class="button bg-success">Save</a>
+					</div>
+				</form>
+			</div>
+			
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="bg-dark">
+  <div class="footer">
+    <p> &copy;Martin 2018</p>
+  </div>
+</footer>
+</body>
+</html>
