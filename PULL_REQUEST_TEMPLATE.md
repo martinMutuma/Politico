@@ -1,12 +1,11 @@
-**What does this PR do?**
+#### What does this PR do?
+#### Description of Task to be completed?
+#### How should this be manually tested?
+`
+git pull origin  
+`
 
-
-**Description of the task**
-
-
-**How to manually test the task**
-git pull origin 
-
-**Relevant Pivotal Tracker stories**
-
-**Screenshots**
+#### Any background context you want to provide?
+#### What are the relevant pivotal tracker stories?
+#### Screenshots (if appropriate)
+#### Questions:
