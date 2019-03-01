@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href='https://fonts.googleapis.com/css?family=Alegreya SC' rel='stylesheet'>
+<link rel="stylesheet" href="css/style.css">
+<title>Political|Home</title>
+</head>
+<body>
+<header class="top-navbar bg-dark">
+  <div class="container">
+    <div class="bland">
+      <a href="index.html">
+      <span class="bland-logo"> Political </span>
+      </a>
+    </div>
+    <nav>
+      <ul>
+        <li >
+          <a href="index.html">&#10224; Home</a>
+        </li>
+        <li>
+          <a  href="viewAllpoliticalparties.html">Political parties</a>
+        </li>
+        <li>
+          <a href="viewCandidates.html">Candidates</a>
+        </li>
+        <li>
+          <a href="vote.html">Vote</a>
+        </li>
+        <li class="dropdown">
+          <a href="#">&#9786;Profile &#8681;</a>
+          <ul class="">
+            <li>
+              <a href="login.html">login</a>
+            </li>
+            <li>
+              <a href="signup.html">signup</a>
+            </li>
+            <li>
+              <a href="admin.html">Admin</a>
+            </li>
+            <li>
+              <a href="profile.html">Edit Profile </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="content">
+  <div class="container signup">
+    <div class="flex-row">
+      <div class="card signup-side">
+        <div class="card-header bg-dark">
+          <span class="bland-logo"> Political </span>
+        </div>
+        <div class="card-body">
+          <h2> Registration procedure</h2>
+          <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eros lorem, pulvinar ac pellentesque eget, fringilla vitae risus. Sed vitae malesuada nunc. Suspendisse efficitur ut massa eget bibendum. Sed ornare eros vitae massa condimentum euismod. </p>
+          <h2> Requirements</h2>
+          <p>Vivamus lobortis cursus magna at porttitor. In nisl magna, posuere nec malesuada vel, sagittis in tortor. Donec porttitor, velit vehicula iaculis pretium, ligula odio tincidunt eros, et condimentum nunc dolor eget lorem. Nam tincidunt posuere arcu. Donec tempor, lorem a ullamcorper convallis, nisl felis imperdiet purus, vitae luctus mi nisl et diam. Vivamus euismod lorem sed magna hendrerit lacinia. Duis dictum suscipit dui, sed convallis quam sagittis eget. </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"> signup </div>
+        <div class="card-body">
+          <form class="form-v1" id="signup"  onSubmit="signup(); return false">
+            <div>
+              <lable>First Name</lable>
+              <input type="text" placeholder="First Name" id="firstname" name="firstname" required>
+            </div>
+              <div>
+              <lable>Last Name</lable>
+              <input type="text" placeholder="Last Name" id="lastname" name="lastname" required>
+            </div>
+               <div>
+              <lable>Other Name</lable>
+              <input type="text" placeholder="Other Name" id="othename" name="othername" required>
+            </div>
+            <div class="form-control">
+              <lable>Email</lable>
+              <input type="email" placeholder="email" name="email" required>
+            </div>
+                <div>
+              <lable>Passport Url</lable>
+              <input type="text" placeholder="Passport Url" id="passporturl" name="passporturl" required>
+            </div>
+            <div>
+              <lable>Password</lable>
+              <input type="password" placeholder="Password" name="password" required>
+            </div>
+            <div>
+              <lable>Confirm Password</lable>
+              <input type="password" placeholder="Confirm Password" name="password" required>
+            </div>
+            <div class="pull-right">
+              <button class="button bg-teal hover-outline-blue">Submit</button>
+            </div>
+            <div class="clear-both"></div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <a href="login.html">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="bg-dark">
+  <div class="footer">
+    <p>
+      &copy;Martin 2018</p>
+  </div>
+</footer>
+</body>
+</html>
