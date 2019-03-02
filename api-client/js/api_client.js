@@ -1,5 +1,5 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_urlj = 'http://127.0.0.1:5000/api/v2/'
+const default_url4 = 'https://mmmpolitical.herokuapp.com/api/v2/'
+const default_url = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
     //default actions 
 create_flash_div()
@@ -122,7 +122,7 @@ function check_login() {
     if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
         if (token == null || token == 'null') {
             localStorage.setItem('error', "Please, login to access the page")
-            if (current_url.search(/admin/i) == -1 & current_url.search(/admin./i) == -1) {
+            if (current_url.search(/admin/i) == -1 || current_url.search(/admin./i) != -1) {
                 window.location.replace('login.html')
             } else {
                 window.location.replace('../login.html')
@@ -269,35 +269,54 @@ function get_all_parties() {
 
             if (data != null) {
                 table = document.getElementById('listParties');
-               data.forEach(function(party,key){
-                  var newRow= table.insertRow();
-                   var id = newRow.insertCell(0);
-                   var name = newRow.insertCell(1);
-                   var address = newRow.insertCell(2);
-                   var action = newRow.insertCell(3);
-                   id.innerHTML = party.id;
-                   name.innerHTML = party.name;
-                   address.innerHTML = party.hqaddress;
-                   
-                   var editButton = document.createElement('button');
-                   editButton.classList.add('button');
-                   editButton.classList.add('bg-warning');
-                   editButton.setAttribute('onclick', 'edit_party('+party.id+')')
-                   editButton.innerHTML = 'Edit'
-                   action.appendChild(editButton);
+                data.forEach(function (party, key) {
+                    var newRow = table.insertRow();
+                    var id = newRow.insertCell(0);
+                    var name = newRow.insertCell(1);
+                    var address = newRow.insertCell(2);
+                    var action = newRow.insertCell(3);
+                    id.innerHTML = party.id;
+                    name.innerHTML = party.name;
+                    address.innerHTML = party.hqaddress;
+                    newRow.id = 'party-'+party.id
+
+                    var editButton = document.createElement('button');
+                    editButton.classList.add('button');
+                    editButton.classList.add('bg-warning');
+                    editButton.setAttribute('onclick', 'edit_party(' + party.id + ')')
+                    editButton.innerHTML = 'Edit'
+                    action.appendChild(editButton);
                     var deleteButton = document.createElement('button');
-                   deleteButton.classList.add('button');
-                   deleteButton.classList.add('bg-error');
-                   deleteButton.setAttribute('onclick', 'delete_party('+party.id+')')
-                   deleteButton.innerHTML = 'Delete'
-                   action.appendChild(deleteButton);
-               });
+                    deleteButton.classList.add('button');
+                    deleteButton.classList.add('bg-error');
+                    deleteButton.setAttribute('onclick', 'delete_party(' + party.id + ')')
+                    deleteButton.innerHTML = 'Delete'
+                    action.appendChild(deleteButton);
+                });
             }
         });
 }
-function edit_party(id){
+
+function edit_party(id) {
     alert(id)
 }
-function delete_party(id){
-    alert(id)
+
+function delete_party(id) {
+    var confirmDel = confirm('Are you sure? This is not reversible.')
+    if (confirmDel == true) {
+        url = default_url + 'parties/' + id
+        make_request(url, 'DELETE')
+            .then(function (response) {
+                data = response.data;
+
+                if (data != null) {
+                    delRow = document.getElementById('party-'+id);
+                    table = document.getElementById('listParties');
+                    table.deleteRow(delRow.rowIndex)
+                    showMessage(data.message);
+                    
+                }
+            });
+
+    }
 }
