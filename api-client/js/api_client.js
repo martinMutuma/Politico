@@ -1,17 +1,23 @@
 const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_url2 = 'http://127.0.0.1:5000/api/v2/'
-const token = sessionStorage.getItem('token')
-//default actions 
+const default_urlj = 'http://127.0.0.1:5000/api/v2/'
+var token = sessionStorage.getItem('token')
+    //default actions 
 create_flash_div()
-check_login();
+//check_login();
+create_spinner()
+
 function make_request(url, method, data = null) {
+    show_loader()
+    token = sessionStorage.getItem('token')
+
     httpHeaders = {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,
-        'Authorization': 'Bearer ' + token
+        'authorization': 'Bearer ' + token
 
     }
+
     MyHeader = new Headers(httpHeaders);
     if (data != null) {
 
@@ -19,7 +25,7 @@ function make_request(url, method, data = null) {
 
     }
     requestInit = {
-        Headers: MyHeader,
+        headers: MyHeader,
         method: method,
         mode: 'cors',
         cache: 'default',
@@ -27,7 +33,7 @@ function make_request(url, method, data = null) {
     }
     if (method == 'get') {
         requestInit = {
-            Headers: MyHeader,
+            headers: MyHeader,
             method: method,
             mode: 'cors',
             cache: 'default',
@@ -36,16 +42,22 @@ function make_request(url, method, data = null) {
     MyRequest = new Request(url, requestInit);
     return fetch(url, requestInit)
         .then(function (response) {
-
-            return response.text()
+            hide_loader();
+            return response.text();
         })
         .then(function (data) {
             data = data ? JSON.parse(data) : {};
             if (data.error != null) {
                 showError(data.error);
             }
+            hide_loader();
             return data
-        })
+        }).catch(function (error) {
+            hide_loader();
+            showError("Something Wrong. Probably connection to server");
+
+            return error;
+        });
 
 
 }
@@ -62,7 +74,8 @@ function login() {
             if (response.data != null) {
                 data = response.data;
                 sessionStorage.setItem('token', data.token);
-                sessionStorage.setItem('user', data.user);
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+                sessionStorage.setItem('userob', data.user);
                 localStorage.setItem('message', "Login Successfull")
                 if (data.user.isadmin == true) {
 
@@ -104,14 +117,29 @@ function hide_flash_message(time_wait = 50000, id = 'flash-message') {
 
 function check_login() {
     current_url = window.location.href
-   
-   if (current_url.search(/login/i)==-1 & current_url.search(/signup/i)==-1){
-    if ( token == null || token == 'null') {
-        localStorage.setItem('error', "Please, login to access the page")
-        window.location.replace('login.html')
-        
+
+
+    if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
+        if (token == null || token == 'null') {
+            localStorage.setItem('error', "Please, login to access the page")
+            if (current_url.search(/admin/i) == -1 & current_url.search(/admin./i) == -1) {
+                window.location.replace('login.html')
+            } else {
+                window.location.replace('../login.html')
+            }
+
+        } else {
+            user = JSON.parse(sessionStorage.getItem('user', null));
+
+            if (current_url.search(/admin/i) != -1 & (user == null || user.isadmin != true)) {
+                if (current_url.search(/admin./i) == -1) {
+                    window.location.replace('../login.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+            }
+        }
     }
-   }
 
 }
 
@@ -123,9 +151,10 @@ function signup() {
             if (response.data != null) {
                 data = response.data;
                 sessionStorage.setItem('token', data.token);
-                sessionStorage.setItem('user', data.user);
-              
-                localStorage.setItem('message', "Registration Successfull. Welcome to Politcal " +data.user.firstname)
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+                sessionStorage.setItem('userob', data.user);
+
+                localStorage.setItem('message', "Registration Successfull. Welcome to Politcal " + data.user.firstname)
                 window.location.replace('index.html')
             }
         });
@@ -133,9 +162,12 @@ function signup() {
 }
 
 function getFormDataById(form_id) {
+
     var formData = new FormData(document.getElementById(form_id));
+
     var data = {};
     formData.forEach(function (value, key) {
+
         data[key] = value;
     });
     return data
@@ -181,8 +213,91 @@ function create_flash_div() {
 
 }
 
+function create_spinner() {
+    var wrapper = document.createElement('div');
+    wrapper.classList.add('loader-wrapper')
+    wrapper.id = 'my-loader';
+    var text = document.createTextNode('Please wait.....')
+    var spinner = document.createElement('div');
+    spinner.classList.add('loader-spin')
+    wrapper.appendChild(spinner);
+    wrapper.appendChild(text);
+    wrapper.style.display = 'none';
+    document.body.appendChild(wrapper)
+
+}
+
+function show_loader() {
+    document.getElementById('my-loader').style.display = 'block'
+}
+
+function hide_loader() {
+    document.getElementById('my-loader').style.display = 'none'
+}
 
 function logout() {
     localStorage.clear();
     sessionStorage.clear();
+}
+
+//admin
+function create_party(e) {
+    e.preventDefault();
+    data = getFormDataById('create-party')
+
+    url = default_url + 'parties'
+    make_request(url, 'POST', data)
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+
+                localStorage.setItem('message', "Party: " + data.name + " Created")
+                window.location.replace('listpoliticalParties.html')
+            }
+        });
+
+    return false;
+
+}
+
+function get_all_parties() {
+    url = default_url + 'parties'
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                table = document.getElementById('listParties');
+               data.forEach(function(party,key){
+                  var newRow= table.insertRow();
+                   var id = newRow.insertCell(0);
+                   var name = newRow.insertCell(1);
+                   var address = newRow.insertCell(2);
+                   var action = newRow.insertCell(3);
+                   id.innerHTML = party.id;
+                   name.innerHTML = party.name;
+                   address.innerHTML = party.hqaddress;
+                   
+                   var editButton = document.createElement('button');
+                   editButton.classList.add('button');
+                   editButton.classList.add('bg-warning');
+                   editButton.setAttribute('onclick', 'edit_party('+party.id+')')
+                   editButton.innerHTML = 'Edit'
+                   action.appendChild(editButton);
+                    var deleteButton = document.createElement('button');
+                   deleteButton.classList.add('button');
+                   deleteButton.classList.add('bg-error');
+                   deleteButton.setAttribute('onclick', 'delete_party('+party.id+')')
+                   deleteButton.innerHTML = 'Delete'
+                   action.appendChild(deleteButton);
+               });
+            }
+        });
+}
+function edit_party(id){
+    alert(id)
+}
+function delete_party(id){
+    alert(id)
 }
