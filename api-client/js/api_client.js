@@ -3,7 +3,7 @@ const default_urlj = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
     //default actions 
 create_flash_div()
-//check_login();
+check_login();
 create_spinner()
 
 function make_request(url, method, data = null) {
