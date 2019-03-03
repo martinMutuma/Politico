@@ -1,7 +1,7 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_urle = 'http://127.0.0.1:5000/api/v2/'
+const default_urlf = 'https://mmmpolitical.herokuapp.com/api/v2/'
+const default_url = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
-//default actions 
+    //default actions 
 create_flash_div()
 check_login();
 create_spinner()
@@ -122,7 +122,8 @@ function check_login() {
     if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
         if (token == null || token == 'null') {
             localStorage.setItem('error', "Please, login to access the page")
-            if (current_url.search(/admin/i) == -1 || current_url.search(/admin./i) != -1) {
+            if (current_url.search(/admin/i) == -1 || current_url.search(/admin.h/i) != -1) {
+             
                 window.location.replace('login.html')
             } else {
                 window.location.replace('../login.html')
@@ -132,7 +133,7 @@ function check_login() {
             user = JSON.parse(sessionStorage.getItem('user', null));
 
             if (current_url.search(/admin/i) != -1 & (user == null || user.isadmin != true)) {
-                if (current_url.search(/admin./i) == -1) {
+                if (current_url.search(/admin.h/i) == -1) {
                     window.location.replace('../login.html');
                 } else {
                     window.location.replace('login.html');
@@ -309,9 +310,10 @@ function edit_party(id) {
             }
         });
 }
+
 function populate_edit_party_form() {
     edit_party = JSON.parse(sessionStorage.getItem('edit_party'));
- 
+
     if (edit_party == null) {
         localStorage.setItem('error', "No party Selected");
         window.location.replace('listpoliticalParties.html');
@@ -321,26 +323,32 @@ function populate_edit_party_form() {
     document.getElementById('hqaddress').value = edit_party.hqaddress;
     document.getElementById('logourl').value = edit_party.logourl;
 }
+
 function save_party_edit(e) {
     e.preventDefault();
     edit_party = JSON.parse(sessionStorage.getItem('edit_party'));
-
+    if (edit_party == null) {
+        localStorage.setItem('error', "No party Selected");
+        window.location.replace('listpoliticalParties.html');
+    }
     data = {
         name: document.getElementById('name').value
     }
+
     url = default_url + 'parties/' + edit_party.id
     make_request(url, 'PATCH', data)
-    .then(function (response) {
-        data = response.data;
+        .then(function (response) {
+            data = response.data;
 
-        if (data != null) {
-            localStorage.setItem('message', "Party Updated");
-            sessionStorage.setItem('edit_party',null);
-            window.location.replace('listpoliticalParties.html');
-        }
-    });
+            if (data != null) {
+                localStorage.setItem('message', "Party Updated");
+                sessionStorage.setItem('edit_party', null);
+                window.location.replace('listpoliticalParties.html');
+            }
+        });
     return false;
 }
+
 function delete_party(id) {
     var confirmDel = confirm('Are you sure? This is not reversible.')
     if (confirmDel == true) {
@@ -359,4 +367,125 @@ function delete_party(id) {
             });
 
     }
+}
+
+function get_all_Offices() {
+    url = default_url + 'offices'
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                table = document.getElementById('listOffices');
+                count = 0;
+                data.forEach(function (office, key) {
+                    count +=1;
+                    var newRow = table.insertRow();
+                    var id = newRow.insertCell(0);
+                    var name = newRow.insertCell(1);
+                    var type = newRow.insertCell(2);
+                    var action = newRow.insertCell(3);
+                    id.innerHTML = count;
+                    name.innerHTML = office.name;
+                    type.innerHTML = office.type;
+                    newRow.id = 'office-' + office.id
+
+                    var editButton = document.createElement('button');
+                    editButton.classList.add('button');
+                    editButton.classList.add('bg-warning');
+                    editButton.setAttribute('onclick', 'edit_office(' + office.id + ')');
+                    editButton.innerHTML = 'Edit';
+                    action.appendChild(editButton);
+                    var deleteButton = document.createElement('button');
+                    deleteButton.classList.add('button');
+                    deleteButton.classList.add('bg-error');
+                    deleteButton.setAttribute('onclick', 'delete_office(' + office.id + ')');
+                    deleteButton.innerHTML = 'Delete';
+                    action.appendChild(deleteButton);
+                });
+            }
+        });
+}
+
+function add_office(e) {
+    e.preventDefault();
+    data = getFormDataById('newOffice')
+
+    url = default_url + 'offices'
+    make_request(url, 'POST', data)
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+
+                localStorage.setItem('message', "Office: " + data.name + " Created");
+                window.location.replace('listpoliticalOffices.html');
+            }
+        });
+
+    return false;
+
+}
+
+function delete_office(id) {
+    var confirmDel = confirm('Are you sure? This is not reversible.')
+    if (confirmDel == true) {
+        url = default_url + 'offices/' + id
+        make_request(url, 'DELETE')
+            .then(function (response) {
+                data = response.data;
+
+                if (data != null) {
+                    delRow = document.getElementById('office-' + id);
+                    table = document.getElementById('listOffices');
+                    table.deleteRow(delRow.rowIndex)
+                    showMessage(data.message);
+
+                }
+            });
+
+    }
+}
+
+function edit_office(id) {
+    url = default_url + 'offices/' + id
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                sessionStorage.setItem('edit_office', JSON.stringify(data));
+                document.getElementById('edit-office-head').innerHTML = '&#8258 Edit Office ' + data.name;
+                document.getElementById('office-name').value = data.name;
+
+            }
+        });
+    modal_show('edit-party-modal');
+
+}
+
+function save_office_edit(e) {
+    e.preventDefault();
+    edit_office = JSON.parse(sessionStorage.getItem('edit_office'));
+    if (edit_party == null) {
+        localStorage.setItem('error', "No Office Selected");
+        window.location.replace('listpoliticalOffices.html');
+        return false;
+    }
+    data = {
+        name: document.getElementById('office-name').value
+    }
+    url = default_url + 'offices/' + edit_office.id
+    make_request(url, 'PATCH', data)
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                showMessage("Office Updated");
+                sessionStorage.setItem('edit_office', null);
+                modal_hide('edit-party-modal');
+                window.location.replace('listpoliticalOffices.html');
+            }
+        });
+    return false;
 }
