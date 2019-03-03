@@ -32,43 +32,30 @@
       <div class="admin-content">
         <div class="action-panel"> <a class="button bg-warning" href="listpoliticalParties.html">&#x21D0 Back to all </a> </div>
         <div class="card">
-        <div class="card-header bg-warning">
-			&#8258 Edit party A
+        <div class="card-header bg-warning" id="party-head">
+			&#8258 Edit party 
 		</div>
 			<div class="card-body bg-light">
-				<form class="form-2col">
+				<form class="form-2col" id="edit-party" onsubmit="save_party_edit(event);">
 			 <div class="control-col-2">
 					<label>Name of party <span class="required">&#8270;</span></label>
-				 <input type="text" placeholder="Name of party" value="Party A" required>
+				 <input type="text" placeholder="Name of party" name="name" id='name' required>
 					</div> 
 				<div class="control-col-2">
-					<label>Registration Number <span class="required">&#8270;</span></label>
-				 <input type="text" placeholder="Registration Number" value="#2282292" required>
+					<label>logo Url <span class="required">&#8270;</span></label>
+				 <input type="text" name='logoUrl' id="logourl" placeholder="logo Url" disabled="disabled"  required>
 					</div>
-					<div class="control-col-2">
-					<label>Address <span class="required">&#8270;</span></label>
-				 <input type="text" placeholder="Address" value="Kwetu 37377 next"required>
-					</div> 
-				<div class="control-col-2">
-					<label>Phone Number <span class="required">&#8270;</span></label>
-				 <input type="text" placeholder="Phone Number" value="07171436112" required>
-					</div>
-					<div class="control-col-2">
-					 <input type="checkbox" checked>Registration fees paid<span class="required">&#8270;</span>
-					</div>
-					<div class="control-col-2">
-						<label> Upload party constitution <span class="required">&#8270;</span></label>
-						<input type="file">
-					</div>
+				
 					
 					<div class="control-col-1">
 						
-						<label> Party Bio <span class="required">&#8270;</span></label>
-						<textarea placeholder="Bio" rows="10">Nunc tellus neque, commodo ultricies leo id, laoreet fringilla massa. Sed elementum bibendum lorem, ut consequat turpis venenatis id. Aenean volutpat turpis et convallis ullamcorper. Nullam suscipit metus quis dolor fermentum, feugiat viverra lectus ultricies. Aenean efficitur augue eros, euismod pulvinar lacus pulvinar a. Curabitur scelerisque neque at ullamcorper ultricies. Integer non libero a turpis porttitor lacinia sed blandit ligula. Quisque at sollicitudin nunc.</textarea>
+						<label>Hq Address <span class="required">&#8270;</span></label>
+						<textarea placeholder="Hq Address" name="hqAddress" id='hqaddress'  disabled="disabled" rows="6"></textarea>
 					</div>
 					<div class="action-panel control-col-1">
-					<a  href="listpoliticalParties.html" class="button bg-success">Save</a>
+					<input type="submit" value="Save" class="button bg-success">
 					</div>
+				</form>
 				</form>
 			</div>
 			
@@ -82,5 +69,10 @@
     <p> &copy;Martin 2018</p>
   </div>
 </footer>
+     <script src="../js/app.js" type="text/javascript" ></script>
+<script src="../js/api_client.js" type="text/javascript" ></script>
+<script>
+populate_edit_party_form();
+</script>
 </body>
 </html>
