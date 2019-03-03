@@ -1,7 +1,7 @@
-const default_url4 = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_url = 'http://127.0.0.1:5000/api/v2/'
+const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
+const default_urle = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
-    //default actions 
+//default actions 
 create_flash_div()
 check_login();
 create_spinner()
@@ -252,8 +252,8 @@ function create_party(e) {
 
             if (data != null) {
 
-                localStorage.setItem('message', "Party: " + data.name + " Created")
-                window.location.replace('listpoliticalParties.html')
+                localStorage.setItem('message', "Party: " + data.name + " Created");
+                window.location.replace('listpoliticalParties.html');
             }
         });
 
@@ -278,7 +278,7 @@ function get_all_parties() {
                     id.innerHTML = party.id;
                     name.innerHTML = party.name;
                     address.innerHTML = party.hqaddress;
-                    newRow.id = 'party-'+party.id
+                    newRow.id = 'party-' + party.id
 
                     var editButton = document.createElement('button');
                     editButton.classList.add('button');
@@ -289,8 +289,8 @@ function get_all_parties() {
                     var deleteButton = document.createElement('button');
                     deleteButton.classList.add('button');
                     deleteButton.classList.add('bg-error');
-                    deleteButton.setAttribute('onclick', 'delete_party(' + party.id + ')')
-                    deleteButton.innerHTML = 'Delete'
+                    deleteButton.setAttribute('onclick', 'delete_party(' + party.id + ')');
+                    deleteButton.innerHTML = 'Delete';
                     action.appendChild(deleteButton);
                 });
             }
@@ -298,9 +298,49 @@ function get_all_parties() {
 }
 
 function edit_party(id) {
-    alert(id)
-}
+    url = default_url + 'parties/' + id
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
 
+            if (data != null) {
+                sessionStorage.setItem('edit_party', JSON.stringify(data));
+                window.location.replace('editParty.html');
+            }
+        });
+}
+function populate_edit_party_form() {
+    edit_party = JSON.parse(sessionStorage.getItem('edit_party'));
+ 
+    if (edit_party == null) {
+        localStorage.setItem('error', "No party Selected");
+        window.location.replace('listpoliticalParties.html');
+    }
+    document.getElementById('party-head').innerHTML += '' + edit_party.name;
+    document.getElementById('name').value = edit_party.name;
+    document.getElementById('hqaddress').value = edit_party.hqaddress;
+    document.getElementById('logourl').value = edit_party.logourl;
+}
+function save_party_edit(e) {
+    e.preventDefault();
+    edit_party = JSON.parse(sessionStorage.getItem('edit_party'));
+
+    data = {
+        name: document.getElementById('name').value
+    }
+    url = default_url + 'parties/' + edit_party.id
+    make_request(url, 'PATCH', data)
+    .then(function (response) {
+        data = response.data;
+
+        if (data != null) {
+            localStorage.setItem('message', "Party Updated");
+            sessionStorage.setItem('edit_party',null);
+            window.location.replace('listpoliticalParties.html');
+        }
+    });
+    return false;
+}
 function delete_party(id) {
     var confirmDel = confirm('Are you sure? This is not reversible.')
     if (confirmDel == true) {
@@ -310,11 +350,11 @@ function delete_party(id) {
                 data = response.data;
 
                 if (data != null) {
-                    delRow = document.getElementById('party-'+id);
+                    delRow = document.getElementById('party-' + id);
                     table = document.getElementById('listParties');
                     table.deleteRow(delRow.rowIndex)
                     showMessage(data.message);
-                    
+
                 }
             });
 
