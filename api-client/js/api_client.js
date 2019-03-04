@@ -1,5 +1,5 @@
-const default_urlf = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_url = 'http://127.0.0.1:5000/api/v2/'
+const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
+const default_urlg = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
     //default actions 
 create_flash_div()
@@ -123,7 +123,7 @@ function check_login() {
         if (token == null || token == 'null') {
             localStorage.setItem('error', "Please, login to access the page")
             if (current_url.search(/admin/i) == -1 || current_url.search(/admin.h/i) != -1) {
-             
+
                 window.location.replace('login.html')
             } else {
                 window.location.replace('../login.html')
@@ -379,7 +379,7 @@ function get_all_Offices() {
                 table = document.getElementById('listOffices');
                 count = 0;
                 data.forEach(function (office, key) {
-                    count +=1;
+                    count += 1;
                     var newRow = table.insertRow();
                     var id = newRow.insertCell(0);
                     var name = newRow.insertCell(1);
@@ -488,4 +488,129 @@ function save_office_edit(e) {
             }
         });
     return false;
+}
+
+function get_all_users() {
+    url = default_url + 'auth/users'
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+            var all_users = [];
+            if (data != null) {
+                table = document.getElementById('listUsers');
+                data.forEach(function (user, key) {
+                    var user_id = user.id
+                    all_users[user_id] = user;
+                    var newRow = table.insertRow();
+                    var id = newRow.insertCell(0);
+                    var name = newRow.insertCell(1);
+                    var address = newRow.insertCell(2);
+                    var action = newRow.insertCell(3);
+                    id.innerHTML = user.id;
+                    name.innerHTML = user.firstname + ' ' + user.lastname + ' ' + user.othername;
+                    address.innerHTML = user.email;
+                    newRow.id = 'user-' + user.id
+                    var viewButton = document.createElement('button');
+                    viewButton.classList.add('button');
+                    viewButton.classList.add('bg-info');
+                    viewButton.setAttribute('onclick', 'view_user(' + user.id + ')');
+                    viewButton.innerHTML = 'view';
+                    action.appendChild(viewButton);
+
+                });
+                localStorage.setItem('all_users', JSON.stringify(all_users));
+
+            }
+        });
+}
+
+function view_user(id) {
+    all_users = JSON.parse(localStorage.getItem('all_users'));
+    user = all_users[id];
+    console.log(user);
+    document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
+    document.getElementById('profile-img').onerror = function () {
+        document.getElementById('profile-img').src = "../images/person3.JPG";
+    }
+    var mini_info = document.getElementById('user-mini-info');
+    mini_info.innerHTML = '';
+    var name = document.createElement('h2');
+    var full_name = user.firstname + ' ' + user.lastname;
+    name.innerHTML = full_name;
+    var email = document.createElement('p');
+    email.innerHTML = 'Email:' + user.email;
+
+    mini_info.appendChild(name);
+    mini_info.appendChild(email);
+    var reg_head = document.getElementById('register-candidate-head')
+    reg_head.innerHTML = 'Register ' + full_name + ' as a candidate'
+    var table = document.getElementById('user-profile-table');
+    table.innerHTML = '';
+
+    Object.keys(user).forEach(function (key) {
+        if (key != 'id'
+            & key != 'email') {
+            var newRow = table.insertRow();
+            var theKey = newRow.insertCell(0);
+            var theValue = newRow.insertCell(1);
+            theKey.style.textTransform = 'capitalize';
+            theKey.innerHTML = key + ':';
+            theValue.innerHTML = user[key];
+        }
+    });
+    var make_admin = document.getElementById('admin-action');
+    if (user.isadmin == true) {
+        make_admin.style.display = 'none';
+
+
+    } else {
+        make_admin.classList.add('bg-warning');
+        make_admin.innerHTML = "Make User Admin";
+        make_admin.setAttribute('onClick', 'make_user_admin(' + user.id + ');');
+        make_admin.style.display = 'block';
+    }
+    var candidate_form = document.getElementById('newCandidate');
+    candidate_form.setAttribute('onSubmit', 'save_candidate(event,' + user.id + ')')
+    modal_show('view-user-modal');
+
+}
+
+function fetch_all_Offices() {
+    url = default_url + 'offices'
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                office_select = document.getElementById('office-select');
+                count = 0;
+                data.forEach(function (office, key) {
+                    count += 1;
+
+                    var opt = document.createElement('option');
+                    opt.value = office.id;
+                    opt.innerHTML = office.name + '(' + office.type + ')';
+
+                    office_select.appendChild(opt);
+                });
+            }
+        });
+}
+
+function save_candidate(event, id) {
+    event.preventDefault()
+    var data = {
+        user_id: id
+    };
+    var office_id = document.getElementById('office-select').value;
+    url = default_url + 'offices/' + office_id + '/register';
+    make_request(url, 'POST', data)
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                showMessage('Registration Successful');
+            }
+        });
+
 }
