@@ -1,5 +1,5 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_urlg = 'http://127.0.0.1:5000/api/v2/'
+const default_urld = 'https://mmmpolitical.herokuapp.com/api/v2/'
+const default_url = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
     //default actions 
 create_flash_div()
@@ -548,8 +548,8 @@ function view_user(id) {
     table.innerHTML = '';
 
     Object.keys(user).forEach(function (key) {
-        if (key != 'id'
-            & key != 'email') {
+        if (key != 'id' &
+            key != 'email') {
             var newRow = table.insertRow();
             var theKey = newRow.insertCell(0);
             var theValue = newRow.insertCell(1);
@@ -613,4 +613,40 @@ function save_candidate(event, id) {
             }
         });
 
+}
+
+function get_all_parties_front() {
+    url = default_url + 'parties'
+    make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+
+                data.forEach(function (party, key) {
+                    var all_parties = document.getElementById('all-parties');
+                    var newParty = document.getElementById('party-profile');
+                    var template = newParty.cloneNode(true);
+                    var party_details = document.getElementById('party-details');
+                    var name = document.createElement('h2');
+                    var address = document.createElement('p');
+
+                    name.innerHTML = party.name;
+                    address.innerHTML = '<b>Address:</b>' + party.hqaddress;
+                    party_details.appendChild(name);
+                    party_details.appendChild(address);
+                    var img = document.getElementById('party-logo');
+                    img.setAttribute('src', party.logourl);
+
+                    newParty.setAttribute('id', 'party-profile-' + party.id);
+                    img.setAttribute('id', 'party-logo-' + party.id);
+                    party_details.setAttribute('id', 'party-details-' + party.id);
+                    newParty.style.display = 'block';
+                    all_parties.appendChild(template);
+                    document.getElementById('party-logo-' + party.id).onerror = function () {
+                        document.getElementById('party-logo-' + party.id).src = "images/party 4.png";
+                    }
+                });
+            }
+        });
 }
