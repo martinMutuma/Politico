@@ -1,5 +1,5 @@
-const default_urld = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_url = 'http://127.0.0.1:5000/api/v2/'
+const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
+const default_urls = 'http://127.0.0.1:5000/api/v2/'
 var token = sessionStorage.getItem('token')
     //default actions 
 create_flash_div()
