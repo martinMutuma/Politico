@@ -1,10 +1,11 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_urls = 'http://127.0.0.1:5000/api/v2/'
-var token = sessionStorage.getItem('token')
+const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/';
+const default_urlf = 'http://127.0.0.1:5000/api/v2/';
+var token = sessionStorage.getItem('token');
+var current_url = window.location.href;
     //default actions 
-create_flash_div()
+create_flash_div();
 check_login();
-create_spinner()
+create_spinner();
 
 function make_request(url, method, data = null) {
     show_loader()
@@ -116,7 +117,7 @@ function hide_flash_message(time_wait = 50000, id = 'flash-message') {
 }
 
 function check_login() {
-    current_url = window.location.href
+   
 
 
     if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
@@ -657,7 +658,12 @@ function get_all_parties_front() {
                     newParty.style.display = 'block';
                     all_parties.appendChild(template);
                     document.getElementById('party-logo-' + party.id).onerror = function () {
-                        document.getElementById('party-logo-' + party.id).src = "images/party 4.png";
+                        var alt_img = "images/party 4.png";
+                         if (current_url.search(/admin/i) != -1){
+                             alt_img="../images/party 4.png"
+                         }
+                        
+                        document.getElementById('party-logo-' + party.id).src = alt_img;
                     }
                 });
             }
@@ -753,7 +759,11 @@ function candidates_by_office_front(elem, id) {
                 newCandidate.style.display = 'block';
                 all_candidates.appendChild(template);
                 document.getElementById('candidate-logo-' + candidate.candidatev_id).onerror = function () {
-                    document.getElementById('candidate-logo-' + candidate.candidatev_id).src = "images/person3.JPG";
+                      var alt_img = "images/person3.JPG";
+                         if (current_url.search(/admin/i) != -1){
+                             alt_img="../images/person3.JPG"
+                         }
+                    document.getElementById('candidate-logo-' + candidate.candidatev_id).src = alt_img;
                 }
             });
         } else {
