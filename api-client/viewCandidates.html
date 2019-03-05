@@ -57,69 +57,35 @@
       <div class="flex-col-3">
         <div class="card bg-sucess-light">
           <div class="card-body">
-            <div class="sidebar bg-light front-sidebar">
-              <a href="viewCandidates.html">Office a</a>
-              <a href="viewCandidates.html">The Presidency</a>
-              <a class="active" href="viewCandidates.html">The Group reader</a>
-              <a href="viewCandidates.html">The Chairman</a>
-              <a href="viewCandidates.html">Head Man</a>
+            <div class="sidebar bg-light front-sidebar" id="offices-sidebar">
+              <a href="#" onClick="all_candidates()" id="all-candidates-link">All Candidates</a>
+             
             </div>
           </div>
         </div>
       </div>
       <div class="flex-col-9">
         <div class="card">
-          <div class="card-header bg-success">
+          <div class="card-header bg-success" id="office-header">
             &#x265B; Candidates for The group reader Seat </div>
           <div class="card-body bg-sucess-light">
             <div class="flex-colum  bg-sucess-light">
-              <div class="card  bg-sucess-light">
+                <div id="all-candidates">
+           
+                  <div class="card" id="candidate-profile" style="display:none" >
                 <div class="card-body bg-light">
                   <div class="flex-row-no-wrap ">
-                    <div class="flex-col-3 party-logo" >
-                      <img class="img party-img" src="images/person1.jpg">
+                    <div class="flex-col-3 party-logo">
+                      <img class="img party-img" src="images/person2.jpg"  id="candidate-img">
                     </div>
                     <div class="flex-col-9" >
-                      <div class="party-detail">
-                        <h2>Candidate Name</h2>
-                        <p><b>Party:</b> Party C</p>
-                        <p><b>intro:</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin fermentum nibh ac lectus porta, sit amet consequat nunc tincidunt. Nulla venenatis odio nisl, ac mollis tortor bibendum fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec fringilla lacinia urna ut malesuada. </p>
+                      <div class="party-detail" id="candidate-details">
+                       
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="card">
-                <div class="card-body bg-light">
-                  <div class="flex-row-no-wrap ">
-                    <div class="flex-col-3 party-logo" >
-                      <img class="img party-img" src="images/person3.JPG">
-                    </div>
-                    <div class="flex-col-9" >
-                      <div class="party-detail">
-                        <h2>Candidate name</h2>
-                        <p><b>Party:</b> Party b</p>
-                        <p><b>Intro:</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin fermentum nibh ac lectus porta, sit amet consequat nunc tincidunt. Nulla venenatis odio nisl, ac mollis tortor bibendum fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec fringilla lacinia urna ut malesuada. </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-body bg-light">
-                  <div class="flex-row-no-wrap ">
-                    <div class="flex-col-3 party-logo" >
-                      <img class="img party-img" src="images/person2.jpg">
-                    </div>
-                    <div class="flex-col-9" >
-                      <div class="party-detail">
-                        <h2>Candidate Name</h2>
-                        <p><b>Party:</b> Party A</p>
-                        <p><b>intro:</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin fermentum nibh ac lectus porta, sit amet consequat nunc tincidunt. Nulla venenatis odio nisl, ac mollis tortor bibendum fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec fringilla lacinia urna ut malesuada. </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
               <div class="pagination">
                 <a href="#">&laquo;</a>
@@ -144,5 +110,10 @@
       &copy;Martin 2018</p>
   </div>
 </footer>
+        <script src="js/app.js" type="text/javascript" ></script>
+<script src="js/api_client.js" type="text/javascript" ></script>
+    <script>
+    offices_sidebar_menu();
+    </script>
 </body>
 </html>
