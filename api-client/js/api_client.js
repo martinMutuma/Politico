@@ -1,10 +1,11 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/'
-const default_urls = 'http://127.0.0.1:5000/api/v2/'
-var token = sessionStorage.getItem('token')
+const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/';
+const default_urlf = 'http://127.0.0.1:5000/api/v2/';
+var token = sessionStorage.getItem('token');
+var current_url = window.location.href;
     //default actions 
-create_flash_div()
+create_flash_div();
 check_login();
-create_spinner()
+create_spinner();
 
 function make_request(url, method, data = null) {
     show_loader()
@@ -116,7 +117,7 @@ function hide_flash_message(time_wait = 50000, id = 'flash-message') {
 }
 
 function check_login() {
-    current_url = window.location.href
+   
 
 
     if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
@@ -576,24 +577,37 @@ function view_user(id) {
 }
 
 function fetch_all_Offices() {
-    url = default_url + 'offices'
-    make_request(url, 'GET')
+    var url = default_url + 'offices'
+    var r_data = make_request(url, 'GET')
         .then(function (response) {
             data = response.data;
 
             if (data != null) {
-                office_select = document.getElementById('office-select');
-                count = 0;
-                data.forEach(function (office, key) {
-                    count += 1;
+                return data;
 
-                    var opt = document.createElement('option');
-                    opt.value = office.id;
-                    opt.innerHTML = office.name + '(' + office.type + ')';
-
-                    office_select.appendChild(opt);
-                });
             }
+            showError('Something went wrong');
+            return {};
+        });
+    return r_data;
+}
+
+function offices_dropdown() {
+    var data = fetch_all_Offices()
+        .then(function (data) {
+
+            office_select = document.getElementById('office-select');
+            count = 0;
+            data.forEach(function (office, key) {
+                count += 1;
+
+                var opt = document.createElement('option');
+                opt.value = office.id;
+                opt.innerHTML = office.name + '(' + office.type + ')';
+
+                office_select.appendChild(opt);
+
+            });
         });
 }
 
@@ -644,9 +658,125 @@ function get_all_parties_front() {
                     newParty.style.display = 'block';
                     all_parties.appendChild(template);
                     document.getElementById('party-logo-' + party.id).onerror = function () {
-                        document.getElementById('party-logo-' + party.id).src = "images/party 4.png";
+                        var alt_img = "images/party 4.png";
+                         if (current_url.search(/admin/i) != -1){
+                             alt_img="../images/party 4.png"
+                         }
+                        
+                        document.getElementById('party-logo-' + party.id).src = alt_img;
                     }
                 });
             }
         });
+}
+
+function offices_sidebar_menu() {
+    var data = fetch_all_Offices()
+        .then(function (data) {
+
+            office_side = document.getElementById('offices-sidebar');
+            count = 0;
+            data.forEach(function (office, key) {
+                count += 1;
+
+                var opt = document.createElement('a');
+                opt.setAttribute('onclick', 'candidates_by_office_front(this,' + office.id + ')');
+                opt.innerHTML = office.name + '(' + office.type + ')';
+
+                office_side.appendChild(opt);
+
+            });
+        });
+}
+
+function fetch_candidates(id = null) {
+    var url = default_url + 'candidates';
+
+    if (id != null) {
+
+        url = default_url + 'offices/' + id + '/candidates'
+    }
+
+    var r_data = make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                return data;
+
+            }
+            showError('Something went wrong');
+            return {};
+        });
+    return r_data;
+}
+
+function candidates_by_office_front(elem, id) {
+    office_side = document.getElementById('offices-sidebar');
+    menu_items = office_side.children;
+    for (x in menu_items) {
+        console.log();
+        if (menu_items[x].classList != null) {
+            menu_items[x].classList.remove('active');
+        }
+    }
+    elem.classList.add('active');
+
+    fetch_candidates(id).then(function (data) {
+        var all_candidates = document.getElementById('all-candidates');
+        var theTemplate = document.getElementById('candidate-profile');
+        all_candidates.innerHTML = '';
+        all_candidates.appendChild(theTemplate);
+        document.getElementById('office-header').innerHTML = ' &#x265B; ' + elem.innerHTML;
+
+        if (data != null & data.length > 0) {
+
+
+            data.forEach(function (candidate, key) {
+
+                var newCandidate = document.getElementById('candidate-profile');
+                template = newCandidate.cloneNode(true);
+                var candidate_details = document.getElementById('candidate-details');
+                var name = document.createElement('h2');
+
+
+
+                name.innerHTML = candidate.candidate_name;
+
+                candidate_details.appendChild(name);
+
+
+                var office = document.createElement('p');
+                office.innerHTML = '<b>Office:</b>' + candidate.office_name + '(' + candidate.office_type + ')';
+                candidate_details.appendChild(office);
+
+                var img = document.getElementById('candidate-img');
+                img.setAttribute('src', candidate.candidate_passport);
+
+                newCandidate.setAttribute('id', 'candidate-profile-' + candidate.candidatev_id);
+                img.setAttribute('id', 'candidate-logo-' + candidate.candidatev_id);
+                candidate_details.setAttribute('id', 'candidate-details-' + candidate.candidatev_id);
+                newCandidate.style.display = 'block';
+                all_candidates.appendChild(template);
+                document.getElementById('candidate-logo-' + candidate.candidatev_id).onerror = function () {
+                      var alt_img = "images/person3.JPG";
+                         if (current_url.search(/admin/i) != -1){
+                             alt_img="../images/person3.JPG"
+                         }
+                    document.getElementById('candidate-logo-' + candidate.candidatev_id).src = alt_img;
+                }
+            });
+        } else {
+            var error = document.createElement('div');
+            error.classList.add('alert');
+            error.classList.add('bg-warning');
+            error.innerHTML = 'No candidates Registred for ' + elem.innerHTML;;
+            all_candidates.appendChild(error);
+        }
+    });
+}
+
+function all_candidates() {
+    var element = document.getElementById('all-candidates-link');
+    candidates_by_office_front(element, null)
 }
