@@ -1,9 +1,9 @@
-const default_url= 'https://mmmpolitical.herokuapp.com/api/v2/';
-const default_urld= 'http://127.0.0.1:5000/api/v2/';
+const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/';
+const default_urls = 'http://127.0.0.1:5000/api/v2/';
 var token = sessionStorage.getItem('token');
 var current_url = window.location.href;
- sessionStorage.setItem('voting', false);
-    //default actions 
+sessionStorage.setItem('voting', false);
+//default actions 
 create_flash_div();
 check_login();
 create_spinner();
@@ -118,7 +118,7 @@ function hide_flash_message(time_wait = 50000, id = 'flash-message') {
 }
 
 function check_login() {
-   
+
 
 
     if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
@@ -241,6 +241,7 @@ function hide_loader() {
 function logout() {
     localStorage.clear();
     sessionStorage.clear();
+    check_login();
 }
 
 //admin
@@ -635,11 +636,12 @@ function get_all_parties_front() {
     make_request(url, 'GET')
         .then(function (response) {
             data = response.data;
-
-            if (data != null) {
+            var all_parties = document.getElementById('all-parties');
+            var len =  Object.keys(data).length
+            if (data != null & len>0) {
 
                 data.forEach(function (party, key) {
-                    var all_parties = document.getElementById('all-parties');
+                   
                     var newParty = document.getElementById('party-profile');
                     var template = newParty.cloneNode(true);
                     var party_details = document.getElementById('party-details');
@@ -660,13 +662,20 @@ function get_all_parties_front() {
                     all_parties.appendChild(template);
                     document.getElementById('party-logo-' + party.id).onerror = function () {
                         var alt_img = "images/party 4.png";
-                         if (current_url.search(/admin/i) != -1){
-                             alt_img="../images/party 4.png"
-                         }
-                        
+                        if (current_url.search(/admin/i) != -1) {
+                            alt_img = "../images/party 4.png"
+                        }
+
                         document.getElementById('party-logo-' + party.id).src = alt_img;
                     }
                 });
+            }else{
+               
+            var error = document.createElement('div');
+            error.classList.add('alert');
+            error.classList.add('bg-warning');
+            error.innerHTML = '<p>No registred parties</p>';
+            all_parties.appendChild(error);
             }
         });
 }
@@ -683,7 +692,7 @@ function offices_sidebar_menu() {
                 var opt = document.createElement('a');
                 opt.setAttribute('onclick', 'candidates_by_office_front(this,' + office.id + ')');
                 opt.innerHTML = office.name + '(' + office.type + ')';
-                opt.id = 'office_link_'+office.id;
+                opt.id = 'office_link_' + office.id;
 
                 office_side.appendChild(opt);
 
@@ -751,7 +760,7 @@ function candidates_by_office_front(elem, id) {
                 var office = document.createElement('p');
                 office.innerHTML = '<b>Office:</b>' + candidate.office_name + '(' + candidate.office_type + ')';
                 candidate_details.appendChild(office);
-                if (sessionStorage.getItem('voting')){
+                if (sessionStorage.getItem('voting')) {
                     set_voting(candidate);
                 }
                 var img = document.getElementById('candidate-img');
@@ -763,10 +772,10 @@ function candidates_by_office_front(elem, id) {
                 newCandidate.style.display = 'block';
                 all_candidates.appendChild(template);
                 document.getElementById('candidate-logo-' + candidate.candidatev_id).onerror = function () {
-                      var alt_img = "images/person3.JPG";
-                         if (current_url.search(/admin/i) != -1){
-                             alt_img="../images/person3.JPG"
-                         }
+                    var alt_img = "images/person3.JPG";
+                    if (current_url.search(/admin/i) != -1) {
+                        alt_img = "../images/person3.JPG"
+                    }
                     document.getElementById('candidate-logo-' + candidate.candidatev_id).src = alt_img;
                 }
             });
@@ -784,91 +793,213 @@ function all_candidates() {
     var element = document.getElementById('all-candidates-link');
     candidates_by_office_front(element, null)
 }
-function set_voting(candidate){
-    var url = default_url + 'votes/check/'+candidate.candidate_office_id
+
+function set_voting(candidate) {
+    var url = default_url + 'votes/check/' + candidate.candidate_office_id
     var r_data = make_request(url, 'GET')
         .then(function (response) {
             data = response.data;
-        
-            if (data != null ) {
-              if (data.voted == false){
-                var vote_button = document.createElement('a');
-                vote_button.classList.add('button');
-                vote_button.classList.add('bg-info');
-                vote_button.classList.add('pull-right');
-                vote_button.setAttribute('onClick', "show_vote_modal("+candidate.candidatev_id+")");
-                  vote_button.innerHTML = "&#10004; Vote for " + candidate.candidate_name;
-                  var vote_area = document.getElementById('cast_vote');
-                  vote_area.innerHTML='';
-                  vote_area.appendChild(vote_button);
-                  vote_area.id = 'cast_vote_'+candidate.candidatev_id
-              }else if(data.voted == true){
-                var voted_alert= document.createElement('div');
-                voted_alert.classList.add('alert');
-                voted_alert.classList.add('bg-warning');
-                voted_alert.classList.add('pull-right');
-               voted_alert.innerHTML = 'Your have already voted';
-                  var vote_area = document.getElementById('cast_vote');
-                  vote_area.innerHTML='';
-                  vote_area.appendChild(voted_alert);
-                   vote_area.id = 'cast_vote_'+candidate.candidatev_id
-                       }
+
+            if (data != null) {
+                if (data.voted == false) {
+                    var vote_button = document.createElement('a');
+                    vote_button.classList.add('button');
+                    vote_button.classList.add('bg-info');
+                    vote_button.classList.add('pull-right');
+                    vote_button.setAttribute('onClick', "show_vote_modal(" + candidate.candidatev_id + ")");
+                    vote_button.innerHTML = "&#10004; Vote for " + candidate.candidate_name;
+                    var vote_area = document.getElementById('cast_vote');
+                    vote_area.innerHTML = '';
+                    vote_area.appendChild(vote_button);
+                    vote_area.id = 'cast_vote_' + candidate.candidatev_id
+                } else if (data.voted == true) {
+                    var voted_alert = document.createElement('div');
+                    voted_alert.classList.add('alert');
+                    voted_alert.classList.add('bg-warning');
+                    voted_alert.classList.add('pull-right');
+                    voted_alert.innerHTML = 'Your have already voted';
+                    var vote_area = document.getElementById('cast_vote');
+                    vote_area.innerHTML = '';
+                    vote_area.appendChild(voted_alert);
+                    vote_area.id = 'cast_vote_' + candidate.candidatev_id
+                }
             }
-            });
+        });
 }
-function show_vote_modal(candidate_id){
-    var url = default_url + 'candidates/'+candidate_id
+
+function show_vote_modal(candidate_id) {
+    var url = default_url + 'candidates/' + candidate_id
     var r_data = make_request(url, 'GET')
         .then(function (response) {
             data = response.data;
-        
-            if (data != null ) {
+
+            if (data != null) {
                 var passport = document.getElementById('v-modal-passport');
                 passport.src = data.candidate_passport;
                 var details = document.getElementById('v-modal-c-details');
                 details.innerHTML = '';
                 var name = document.createElement('h2');
-                name.innerHTML = 'Name: '+data.candidate_name;
+                name.innerHTML = 'Name: ' + data.candidate_name;
                 var office = document.createElement('h2');
-                office.innerHTML = 'Office: '+data.office_name+"("+ data.office_type+")";
+                office.innerHTML = 'Office: ' + data.office_name + "(" + data.office_type + ")";
                 details.appendChild(name);
                 details.appendChild(office);
-                 var confirm_vote_btn = document.getElementById('v-modal-vote-btn-confirm');
+                var confirm_vote_btn = document.getElementById('v-modal-vote-btn-confirm');
                 confirm_vote_btn.setAttribute('class', 'button bg-success');
-                confirm_vote_btn.innerHTML="Vote"
-                confirm_vote_btn.setAttribute('onClick', 'save_vote('+candidate_id+','+data.candidate_office_id+')');
+                confirm_vote_btn.innerHTML = "Vote"
+                confirm_vote_btn.setAttribute('onClick', 'save_vote(' + candidate_id + ',' + data.candidate_office_id + ')');
                 var action_div = document.getElementById('v-modal-vote-action');
                 action_div.appendChild(confirm_vote_btn);
                 var info = document.getElementById('v-modal-info');
-                info.innerHTML= "<p>You are about to cast vote for "+data.candidate_name+", click vote to cast </p>"
+                info.innerHTML = "<p>You are about to cast vote for " + data.candidate_name + ", click vote to cast </p>"
                 modal_show('confirm-vote');
-                 document.getElementById('v-modal-passport').onerror = function () {
-                      var alt_img = "images/person3.JPG";
+                document.getElementById('v-modal-passport').onerror = function () {
+                    var alt_img = "images/person3.JPG";
                     document.getElementById('v-modal-passport').src = alt_img;
                 }
             }
-            });
-    
-    
-    
+        });
+
+
+
 }
-function save_vote(candidate_id, office_id){
-    data={
-        candidate_id:candidate_id,
-        office_id:office_id
+
+function save_vote(candidate_id, office_id) {
+    data = {
+        candidate_id: candidate_id,
+        office_id: office_id
     }
-    
-     url = default_url + 'votes';
+
+    url = default_url + 'votes';
     make_request(url, 'POST', data)
         .then(function (response) {
             data = response.data;
 
             if (data != null) {
                 showMessage('Voted');
-                var office_link = document.getElementById('office_link_'+office_id)
+                var office_link = document.getElementById('office_link_' + office_id)
                 candidates_by_office_front(office_link, office_id);
                 modal_hide('confirm-vote');
             }
         });
+
+}
+
+function get_results() {
+    var data = fetch_all_Offices()
+        .then(function (data) {
+            data.forEach(function (office, key) {
+                var office_card = document.getElementById('office-result');
+
+                var template = office_card.cloneNode(true);
+
+                var header = document.getElementById('office-result-header');
+                header.innerHTML = office.name + '(' + office.type + ')';
+
+                var table = document.getElementById('office_result_table');
+                var table_head = document.getElementById('result-table-header')
+                table.innerHTML = '';
+                table.appendChild(table_head);
+                url = default_url + 'offices/' + office.id + '/result';
+                make_request(url, 'GET').then(function (response) {
+                    data2 = response.data;
+                    if (data2 != null) {
+                        count = 0;
+                        data2.forEach(function (vote, key) {
+                            count += 1
+                            var newRow = table.insertRow();
+                            if (count == 1) {
+                                newRow.classList.add('bg-sucess-light');
+                            }
+                            var no = newRow.insertCell(0);
+                            no.innerHTML = count;
+                            var candidate_name = newRow.insertCell(1);
+                            candidate_name.id = 'c_name_cell_' + vote.candidate_id;
+                            candidate_name.innerHTML = 'Gettting name took long candidate:'+vote.candidate_id;
+                            var result = newRow.insertCell(2);
+                            result.innerHTML = vote.result;
+
+
+                        });
+                    }
+                });
+                header.id = 'office-result-header-' + office.id;
+                office_card.id = 'office-result-' + office.id;
+                table.id = 'office_result_table' + office.id;
+                table_head.id = 'result-table-header' + office.id;
+                office_card.style.display = 'flex';
+                document.getElementById('all-results').appendChild(template);
+
+            });
+        }).then(function () {
+            setTimeout( get_candidates_names(), 15000);
+        });
+
+}
+
+function get_candidates_names() {
+    fetch_candidates(null)
+        .then(function (data) {
+            if (data != null) {
+                data.forEach(function (candidate, key) {
+
+                    var cell_id = 'c_name_cell_' + candidate.candidatev_id;
+                    var cell = document.getElementById(cell_id);
+
+                    if (cell != null) {
+                        cell.innerHTML = candidate.candidate_name;
+                    } else {
+                        var table = document.getElementById('office_result_table' + candidate.candidate_office_id);
+                        if (table != null) {
+                            var newRow = table.insertRow()
+                            var no = newRow.insertCell(0);
+                            no.innerHTML = '#';
+                            var candidate_name = newRow.insertCell(1);
+                            candidate_name.id = 'c_name_cell_' + candidate.candidatev_id;
+                            candidate_name.innerHTML = candidate.candidate_name;
+                            var result = newRow.insertCell(2);
+                            result.innerHTML = 0;
+                        }
+
+                    }
+
+                });
+            }
+
+        }).then(function () {
+            calc_result_totals();
+        });
+
+}
+
+function calc_result_totals() {
+    var tables = document.getElementsByTagName("table");
+    for (x in tables) {
+        var table = tables[x];
+        if (table instanceof Element || table instanceof HTMLDocument) {
+            var rows = table.rows;
+            var total = 0
+            for (c in rows) {
+                if (rows[c].cells != null) {
+                    val = parseInt(rows[c].cells[2].innerHTML);
+                    if (!isNaN(val)) {
+                        total += val
+                    }
+
+                }
+
+
+            }
+            var newRow = table.insertRow();
+            newRow.classList.add('bg-warning');
+            var no = newRow.insertCell(0);
+            no.innerHTML = '#';
+            var name = newRow.insertCell(1);
+
+            name.innerHTML = "Total Votes";
+            var result = newRow.insertCell(2);
+            result.innerHTML = total;
+        }
+    }
 
 }

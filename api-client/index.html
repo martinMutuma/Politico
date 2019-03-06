@@ -30,15 +30,13 @@
         <li>
           <a href="vote.html">Vote</a>
         </li>
+           <li>
+          <a onClick="logout();">logout</a>
+        </li>
         <li class="dropdown">
           <a href="#">&#9786;Profile &#8681;</a>
           <ul class="">
-            <li>
-              <a href="login.html">login</a>
-            </li>
-            <li>
-              <a href="signup.html">signup</a>
-            </li>
+          
             <li>
               <a href="admin.html">Admin</a>
             </li>
@@ -64,13 +62,13 @@
     </div>
   </div>
   <div class="container">
-    <div class="flex-row">
-        <div class="flex-col-6">
-      <div class="card">
-        <div class="card-header bg-blue"> Office A </div>
+    <div class="flex-row flex-row-wrap" id="all-results">
+ 
+      <div class="card flex-col-6" id="office-result" style="display:none">
+        <div class="card-header  bg-blue" id="office-result-header"> Office b </div>
         <div class="card-body">
-          <table class="table result-table">
-            <tr class="bg-dark">
+          <table class="table result-table" id="office_result_table">
+            <tr class="bg-dark"  id='result-table-header'>
               <th>#</th>
               <th>Candidate </th>
               <th>Votes </th>
@@ -111,55 +109,7 @@
           </div>
         </div>
       </div>
-            </div>
-        
-         <div class="flex-col-6">
-      <div class="card">
-        <div class="card-header bg-light"> Office b </div>
-        <div class="card-body">
-          <table class="table result-table">
-            <tr class="bg-dark">
-              <th>#</th>
-              <th>Candidate </th>
-              <th>Votes </th>
-            </tr>
-            <tr class="bg-sucess-light">
-              <td>1</td>
-              <td>Candidate A</td>
-              <td>484500</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Candidate b</td>
-              <td>95940 </td>
-            </tr>
-              <tr>
-              <td>3</td>
-              <td>Candidate c</td>
-              <td>5959 </td>
-            </tr>
-            <tr class="bg-warning">
-              <th >#</th>
-              <th>Total votes cast</th>
-              <th>96006060</th>
-            </tr>
-          </table>
-          <div class="modal" id="confirm-delete">
-            <div class="modal-body">
-              <div class="clear-both"></div>
-              <div class="alert bg-error">
-                <p> Are you sure?</p>
-              </div>
-              <div class="action-panel">
-                <button class="button bg-warning pull-right" onClick="modal_hide('confirm-delete')">Close</button>
-                <button class="button bg-error" onClick="modal_show('success-delete', 'confirm-delete')">Confirm delete</button>
-              </div>
-              <div class="clear-both"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-            </div>
+       
     </div>
   </div>
 </main>
@@ -171,6 +121,8 @@
 </footer>
     <script src="js/app.js" type="text/javascript" ></script>
 <script src="js/api_client.js" type="text/javascript" ></script>
-    
+    <script>
+    get_results();
+    </script>
 </body>
 </html>
