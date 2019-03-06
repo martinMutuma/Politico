@@ -57,58 +57,36 @@
       <div class="flex-col-3">
         <div class="card bg-sucess-light">
           <div class="card-body">
-            <div class="sidebar bg-light front-sidebar">
-              <a href="vote.html">Office a</a>
-              <a href="vote.html">The Presidency</a>
-              <a class="active" href="vote.html">The Group reader</a>
-              <a href="vote.html">The Chairman</a>
-              <a href="vote.html">Head Man</a>
+            <div class="sidebar bg-light front-sidebar" id="offices-sidebar">
+              <a>Offices</a>
             </div>
           </div>
         </div>
       </div>
       <div class="flex-col-9">
         <div class="card">
-          <div class="card-header bg-success">
-            &#x265B; Candidates for The group reader Seat </div>
+          <div class="card-header bg-success" id="office-header">
+            &#x265B; Candidates </div>
           <div class="card-body bg-sucess-light">
             <div class="flex-colum  bg-sucess-light">
-              <div class="card  bg-sucess-light">
-                <div class="card-body bg-light">
-                  <h2 class="text-title">Candidate Name   (Party Name)</h2>
-                  <div class="flex-row-no-wrap ">
-                    <div class="flex-col-3 party-logo">
-                      <img class="img party-img" src="images/person1.jpg">
-                    </div>
-                    <div class="flex-col-4" >
-                      <div class="party-detail">
-                        <div class="party-logo" >
-                          <img class="img party-img" src="images/party5.jpg">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="flex-col-3 vote-area" >
-                      <a class="button bg-info" onClick="modal_show('confirm-vote')">&#10004; Vote for Name</a>
-                    </div>
+             
+              <div id="all-candidates">
+                  <div class="alert bg-info">
+                  Select an Office to view candidates and Vote 
                   </div>
-                </div>
-              </div>
-              <div class="card  bg-sucess-light">
-                <div class="card-body bg-light">
-                  <h2 class="text-title">Candidate Name   (Party Name)</h2>
-                  <div class="flex-row-no-wrap ">
-                    <div class="flex-col-3 party-logo">
-                      <img class="img party-img" src="images/person3.JPG">
-                    </div>
-                    <div class="flex-col-4" >
-                      <div class="party-detail">
-                        <div class="party-logo" >
-                          <img class="img party-img" src="images/party 4.png">
+                <div class="card" id="candidate-profile" style="display:none" >
+                  <div class="card-body bg-light">
+                    <div class="flex-row-no-wrap ">
+                      <div class="flex-col-3 party-logo">
+                        <img class="img party-img" src="images/person2.jpg"  id="candidate-img">
+                      </div>
+                      <div class="flex-col-6" >
+                        <div class="party-detail" id="candidate-details">
                         </div>
                       </div>
-                    </div>
-                    <div class="flex-col-3 vote-area" >
-                      <a class="button bg-info">&#10004; Vote for Name</a>
+                      <div class="flex-col-3 vote-area" id="cast_vote">
+                        <a class="button bg-info pull-right" onClick="modal_show('confirm-vote')">&#10004; Vote for Name</a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -122,26 +100,24 @@
           <div class="card bg-blue">
             <div class="card-header bg-blue">Confirm vote</div>
             <div class="card-body bg-light">
-            <div class="flex-row-no-wrap">
-              <div class="flex-col-6">
-                <img src="images/person3.JPG"  height="200px" class="">
-              </div>
-              <div class="flex-col-6">
-               
+              <div class="flex-row-no-wrap">
+                <div class="flex-col-6">
+                  <img src="images/person3.JPG"  height="200px" id='v-modal-passport'>
+                </div>
+                <div class="flex-col-6" id="v-modal-c-details">
                   <h2>Name: Mellisa Gibsons </h2>
                   <h2>Party: Party A </h2>
-                <h2>Office: Chairman </h2>
-                  
-              </div>
+                  <h2>Office: Chairman </h2>
                 </div>
-              <div class="action-panel">
+              </div>
+              <div class="action-panel" id="v-modal-vote-action">
                 <button class="button bg-warning pull-right" onClick="modal_hide('confirm-vote')">Cancel</button>
-                <button class="button bg-success" onClick="modal_hide('confirm-vote')">Confirm Vote</button>
+             <button id="v-modal-vote-btn-confirm"></button>
               </div>
             </div>
           </div>
           <div class="clear-both"></div>
-          <div class="alert bg-info">
+          <div class="alert bg-info" id="v-modal-info">
             <p>You are about to cast vote for Candidate name, click confirm vote to cast </p>
           </div>
           <div class="clear-both"></div>
@@ -157,5 +133,10 @@
   </div>
 </footer>
 <script src="js/app.js" type="text/javascript" ></script>
+<script src="js/api_client.js" type="text/javascript" ></script>
+<script>
+    offices_sidebar_menu();
+        sessionStorage.setItem('voting', true);
+    </script>
 </body>
 </html>

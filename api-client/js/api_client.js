@@ -1,7 +1,8 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/';
-const default_urlf = 'http://127.0.0.1:5000/api/v2/';
+const default_url= 'https://mmmpolitical.herokuapp.com/api/v2/';
+const default_urld= 'http://127.0.0.1:5000/api/v2/';
 var token = sessionStorage.getItem('token');
 var current_url = window.location.href;
+ sessionStorage.setItem('voting', false);
     //default actions 
 create_flash_div();
 check_login();
@@ -528,7 +529,6 @@ function get_all_users() {
 function view_user(id) {
     all_users = JSON.parse(localStorage.getItem('all_users'));
     user = all_users[id];
-    console.log(user);
     document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
     document.getElementById('profile-img').onerror = function () {
         document.getElementById('profile-img').src = "../images/person3.JPG";
@@ -624,6 +624,7 @@ function save_candidate(event, id) {
 
             if (data != null) {
                 showMessage('Registration Successful');
+                modal_hide('view-user-modal');
             }
         });
 
@@ -682,6 +683,7 @@ function offices_sidebar_menu() {
                 var opt = document.createElement('a');
                 opt.setAttribute('onclick', 'candidates_by_office_front(this,' + office.id + ')');
                 opt.innerHTML = office.name + '(' + office.type + ')';
+                opt.id = 'office_link_'+office.id;
 
                 office_side.appendChild(opt);
 
@@ -749,7 +751,9 @@ function candidates_by_office_front(elem, id) {
                 var office = document.createElement('p');
                 office.innerHTML = '<b>Office:</b>' + candidate.office_name + '(' + candidate.office_type + ')';
                 candidate_details.appendChild(office);
-
+                if (sessionStorage.getItem('voting')){
+                    set_voting(candidate);
+                }
                 var img = document.getElementById('candidate-img');
                 img.setAttribute('src', candidate.candidate_passport);
 
@@ -779,4 +783,92 @@ function candidates_by_office_front(elem, id) {
 function all_candidates() {
     var element = document.getElementById('all-candidates-link');
     candidates_by_office_front(element, null)
+}
+function set_voting(candidate){
+    var url = default_url + 'votes/check/'+candidate.candidate_office_id
+    var r_data = make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+        
+            if (data != null ) {
+              if (data.voted == false){
+                var vote_button = document.createElement('a');
+                vote_button.classList.add('button');
+                vote_button.classList.add('bg-info');
+                vote_button.classList.add('pull-right');
+                vote_button.setAttribute('onClick', "show_vote_modal("+candidate.candidatev_id+")");
+                  vote_button.innerHTML = "&#10004; Vote for " + candidate.candidate_name;
+                  var vote_area = document.getElementById('cast_vote');
+                  vote_area.innerHTML='';
+                  vote_area.appendChild(vote_button);
+                  vote_area.id = 'cast_vote_'+candidate.candidatev_id
+              }else if(data.voted == true){
+                var voted_alert= document.createElement('div');
+                voted_alert.classList.add('alert');
+                voted_alert.classList.add('bg-warning');
+                voted_alert.classList.add('pull-right');
+               voted_alert.innerHTML = 'Your have already voted';
+                  var vote_area = document.getElementById('cast_vote');
+                  vote_area.innerHTML='';
+                  vote_area.appendChild(voted_alert);
+                   vote_area.id = 'cast_vote_'+candidate.candidatev_id
+                       }
+            }
+            });
+}
+function show_vote_modal(candidate_id){
+    var url = default_url + 'candidates/'+candidate_id
+    var r_data = make_request(url, 'GET')
+        .then(function (response) {
+            data = response.data;
+        
+            if (data != null ) {
+                var passport = document.getElementById('v-modal-passport');
+                passport.src = data.candidate_passport;
+                var details = document.getElementById('v-modal-c-details');
+                details.innerHTML = '';
+                var name = document.createElement('h2');
+                name.innerHTML = 'Name: '+data.candidate_name;
+                var office = document.createElement('h2');
+                office.innerHTML = 'Office: '+data.office_name+"("+ data.office_type+")";
+                details.appendChild(name);
+                details.appendChild(office);
+                 var confirm_vote_btn = document.getElementById('v-modal-vote-btn-confirm');
+                confirm_vote_btn.setAttribute('class', 'button bg-success');
+                confirm_vote_btn.innerHTML="Vote"
+                confirm_vote_btn.setAttribute('onClick', 'save_vote('+candidate_id+','+data.candidate_office_id+')');
+                var action_div = document.getElementById('v-modal-vote-action');
+                action_div.appendChild(confirm_vote_btn);
+                var info = document.getElementById('v-modal-info');
+                info.innerHTML= "<p>You are about to cast vote for "+data.candidate_name+", click vote to cast </p>"
+                modal_show('confirm-vote');
+                 document.getElementById('v-modal-passport').onerror = function () {
+                      var alt_img = "images/person3.JPG";
+                    document.getElementById('v-modal-passport').src = alt_img;
+                }
+            }
+            });
+    
+    
+    
+}
+function save_vote(candidate_id, office_id){
+    data={
+        candidate_id:candidate_id,
+        office_id:office_id
+    }
+    
+     url = default_url + 'votes';
+    make_request(url, 'POST', data)
+        .then(function (response) {
+            data = response.data;
+
+            if (data != null) {
+                showMessage('Voted');
+                var office_link = document.getElementById('office_link_'+office_id)
+                candidates_by_office_front(office_link, office_id);
+                modal_hide('confirm-vote');
+            }
+        });
+
 }
