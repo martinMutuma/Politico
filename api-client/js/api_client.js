@@ -1,5 +1,5 @@
 const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/';
-const default_urls = 'http://127.0.0.1:5000/api/v2/';
+const default_urld= 'http://127.0.0.1:5000/api/v2/';
 var token = sessionStorage.getItem('token');
 var current_url = window.location.href;
 sessionStorage.setItem('voting', false);
@@ -122,7 +122,9 @@ function check_login() {
 
 
     if (current_url.search(/login/i) == -1 & current_url.search(/signup/i) == -1) {
+      
         if (token == null || token == 'null') {
+         
             localStorage.setItem('error', "Please, login to access the page")
             if (current_url.search(/admin/i) == -1 || current_url.search(/admin.h/i) != -1) {
 
@@ -532,7 +534,7 @@ function view_user(id) {
     user = all_users[id];
     document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
     document.getElementById('profile-img').onerror = function () {
-        document.getElementById('profile-img').src = "../images/person3.JPG";
+        document.getElementById('profile-img').src = "../images/party5.jpg";
     }
     var mini_info = document.getElementById('user-mini-info');
     mini_info.innerHTML = '';
@@ -637,11 +639,11 @@ function get_all_parties_front() {
         .then(function (response) {
             data = response.data;
             var all_parties = document.getElementById('all-parties');
-            var len =  Object.keys(data).length
-            if (data != null & len>0) {
+            var len = Object.keys(data).length
+            if (data != null & len > 0) {
 
                 data.forEach(function (party, key) {
-                   
+
                     var newParty = document.getElementById('party-profile');
                     var template = newParty.cloneNode(true);
                     var party_details = document.getElementById('party-details');
@@ -669,13 +671,13 @@ function get_all_parties_front() {
                         document.getElementById('party-logo-' + party.id).src = alt_img;
                     }
                 });
-            }else{
-               
-            var error = document.createElement('div');
-            error.classList.add('alert');
-            error.classList.add('bg-warning');
-            error.innerHTML = '<p>No registred parties</p>';
-            all_parties.appendChild(error);
+            } else {
+
+                var error = document.createElement('div');
+                error.classList.add('alert');
+                error.classList.add('bg-warning');
+                error.innerHTML = '<p>No registred parties</p>';
+                all_parties.appendChild(error);
             }
         });
 }
@@ -772,9 +774,9 @@ function candidates_by_office_front(elem, id) {
                 newCandidate.style.display = 'block';
                 all_candidates.appendChild(template);
                 document.getElementById('candidate-logo-' + candidate.candidatev_id).onerror = function () {
-                    var alt_img = "images/person3.JPG";
+                    var alt_img = "images/party5.jpg";
                     if (current_url.search(/admin/i) != -1) {
-                        alt_img = "../images/person3.JPG"
+                        alt_img = "../images/party5.jpg"
                     }
                     document.getElementById('candidate-logo-' + candidate.candidatev_id).src = alt_img;
                 }
@@ -854,7 +856,7 @@ function show_vote_modal(candidate_id) {
                 info.innerHTML = "<p>You are about to cast vote for " + data.candidate_name + ", click vote to cast </p>"
                 modal_show('confirm-vote');
                 document.getElementById('v-modal-passport').onerror = function () {
-                    var alt_img = "images/person3.JPG";
+                    var alt_img = "images/party5.jpg";
                     document.getElementById('v-modal-passport').src = alt_img;
                 }
             }
@@ -886,12 +888,20 @@ function save_vote(candidate_id, office_id) {
 }
 
 function get_results() {
+    var office_card = document.getElementById('office-result');
+
+    var template = office_card.cloneNode(true);
+    var all_results = document.getElementById('all-results');
+    console.log(all_results);
+    all_results.innerHTML = '';
+    all_results.appendChild(template);
     var data = fetch_all_Offices()
         .then(function (data) {
             data.forEach(function (office, key) {
                 var office_card = document.getElementById('office-result');
 
-                var template = office_card.cloneNode(true);
+                var template = office_card.cloneNode(true);;
+
 
                 var header = document.getElementById('office-result-header');
                 header.innerHTML = office.name + '(' + office.type + ')';
@@ -915,7 +925,7 @@ function get_results() {
                             no.innerHTML = count;
                             var candidate_name = newRow.insertCell(1);
                             candidate_name.id = 'c_name_cell_' + vote.candidate_id;
-                            candidate_name.innerHTML = 'Gettting name took long candidate:'+vote.candidate_id;
+                            candidate_name.innerHTML = 'Candidate: ' + vote.candidate_id;
                             var result = newRow.insertCell(2);
                             result.innerHTML = vote.result;
 
@@ -928,11 +938,12 @@ function get_results() {
                 table.id = 'office_result_table' + office.id;
                 table_head.id = 'result-table-header' + office.id;
                 office_card.style.display = 'flex';
-                document.getElementById('all-results').appendChild(template);
+
+                all_results.appendChild(template);
 
             });
         }).then(function () {
-            setTimeout( get_candidates_names(), 15000);
+            setTimeout(get_candidates_names(), 15000);
         });
 
 }
@@ -1002,4 +1013,75 @@ function calc_result_totals() {
         }
     }
 
+}
+
+function view_user_profile() {
+
+    user = JSON.parse(sessionStorage.getItem('user'))
+    document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
+    document.getElementById('profile-img').onerror = function () {
+        document.getElementById('profile-img').src = "images/party5.jpg";
+    }
+    var mini_info = document.getElementById('user-mini-info');
+    mini_info.innerHTML = '';
+    var name = document.createElement('h2');
+    var full_name = user.firstname + ' ' + user.lastname;
+    name.innerHTML = full_name;
+    var email = document.createElement('p');
+    email.innerHTML = 'Email:' + user.email;
+
+    mini_info.appendChild(name);
+    mini_info.appendChild(email);
+    var table = document.getElementById('user-profile-table');
+    table.innerHTML = '';
+
+    Object.keys(user).forEach(function (key) {
+        if (key != 'id' & key != 'isadmin' &
+            key != 'email') {
+            var newRow = table.insertRow();
+            var theKey = newRow.insertCell(0);
+            var theValue = newRow.insertCell(1);
+            theKey.style.textTransform = 'capitalize';
+            theKey.innerHTML = key + ':';
+            theValue.innerHTML = user[key];
+        }
+    });
+
+
+}
+
+function view_user_votes() {
+    user = JSON.parse(sessionStorage.getItem('user'))
+    document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
+    document.getElementById('profile-img').onerror = function () {
+        document.getElementById('profile-img').src = "images/party5.jpg";
+    }
+    var mini_info = document.getElementById('user-mini-info');
+    mini_info.innerHTML = '';
+    var name = document.createElement('h2');
+    var full_name = user.firstname + ' ' + user.lastname;
+    name.innerHTML = full_name;
+    var email = document.createElement('p');
+    email.innerHTML = 'Email:' + user.email;
+
+    mini_info.appendChild(name);
+    mini_info.appendChild(email);
+    var table = document.getElementById('my_votes');
+    var header = document.getElementById('my_votes_header');
+    table.innerHTML = '';
+    table.appendChild(header);
+    url = default_url + 'votes/myvotes';
+    make_request(url, 'GET').then(function (response) {
+        data = response.data;
+        if (data != null) {
+            data.forEach(function (vote, key) {
+                var newRow = table.insertRow();
+                var office = newRow.insertCell(0);
+                office.innerHTML = `${vote.office_name} (${vote.office_type})`
+                var candidate = newRow.insertCell(1);
+                candidate.innerHTML = vote.candidate_name;
+
+            });
+        }
+    });
 }
