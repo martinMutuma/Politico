@@ -1,5 +1,5 @@
-const default_url = 'https://mmmpolitical.herokuapp.com/api/v2/';
-const default_urld= 'http://127.0.0.1:5000/api/v2/';
+const default_url= 'https://mmmpolitical.herokuapp.com/api/v2/';
+const default_urlg= 'http://127.0.0.1:5000/api/v2/';
 var token = sessionStorage.getItem('token');
 var current_url = window.location.href;
 sessionStorage.setItem('voting', false);
@@ -108,7 +108,7 @@ function showMessage(msg, id = 'flash-message') {
     hide_flash_message()
 }
 
-function hide_flash_message(time_wait = 50000, id = 'flash-message') {
+function hide_flash_message(time_wait = 3000, id = 'flash-message') {
     setTimeout(function () {
         var element = document.getElementById(id);
         element.parentElement.style.display = 'none';
@@ -137,10 +137,11 @@ function check_login() {
             user = JSON.parse(sessionStorage.getItem('user', null));
 
             if (current_url.search(/admin/i) != -1 & (user == null || user.isadmin != true)) {
+                showError('Your are not authorized to access that page');
                 if (current_url.search(/admin.h/i) == -1) {
-                    window.location.replace('../login.html');
+                    window.location.replace('../index.html');
                 } else {
-                    window.location.replace('login.html');
+                    window.location.replace('index.html');
                 }
             }
         }
@@ -943,7 +944,7 @@ function get_results() {
 
             });
         }).then(function () {
-            setTimeout(get_candidates_names(), 15000);
+            setTimeout(function(){get_candidates_names()}, 500);
         });
 
 }
@@ -976,9 +977,9 @@ function get_candidates_names() {
 
                 });
             }
-
+        calc_result_totals();
         }).then(function () {
-            calc_result_totals();
+          
         });
 
 }
@@ -1016,22 +1017,7 @@ function calc_result_totals() {
 }
 
 function view_user_profile() {
-
-    user = JSON.parse(sessionStorage.getItem('user'))
-    document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
-    document.getElementById('profile-img').onerror = function () {
-        document.getElementById('profile-img').src = "images/party5.jpg";
-    }
-    var mini_info = document.getElementById('user-mini-info');
-    mini_info.innerHTML = '';
-    var name = document.createElement('h2');
-    var full_name = user.firstname + ' ' + user.lastname;
-    name.innerHTML = full_name;
-    var email = document.createElement('p');
-    email.innerHTML = 'Email:' + user.email;
-
-    mini_info.appendChild(name);
-    mini_info.appendChild(email);
+   user_mini_info();
     var table = document.getElementById('user-profile-table');
     table.innerHTML = '';
 
@@ -1051,21 +1037,7 @@ function view_user_profile() {
 }
 
 function view_user_votes() {
-    user = JSON.parse(sessionStorage.getItem('user'))
-    document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
-    document.getElementById('profile-img').onerror = function () {
-        document.getElementById('profile-img').src = "images/party5.jpg";
-    }
-    var mini_info = document.getElementById('user-mini-info');
-    mini_info.innerHTML = '';
-    var name = document.createElement('h2');
-    var full_name = user.firstname + ' ' + user.lastname;
-    name.innerHTML = full_name;
-    var email = document.createElement('p');
-    email.innerHTML = 'Email:' + user.email;
-
-    mini_info.appendChild(name);
-    mini_info.appendChild(email);
+    user_mini_info()
     var table = document.getElementById('my_votes');
     var header = document.getElementById('my_votes_header');
     table.innerHTML = '';
@@ -1083,5 +1055,81 @@ function view_user_votes() {
 
             });
         }
+    });
+}
+function user_mini_info(){
+     user = JSON.parse(sessionStorage.getItem('user'));
+    document.getElementById('profile-img').setAttribute('src', user.passporturlstring);
+    document.getElementById('profile-img').onerror = function () {
+        document.getElementById('profile-img').src = "images/party5.jpg";
+    }
+    var mini_info = document.getElementById('user-mini-info');
+    mini_info.innerHTML = '';
+    var name = document.createElement('h2');
+    var full_name = user.firstname + ' ' + user.lastname;
+    name.innerHTML = full_name;
+    var email = document.createElement('p');
+    email.innerHTML = 'Email:' + user.email;
+
+    mini_info.appendChild(name);
+    mini_info.appendChild(email); 
+}
+function load_petition(){
+    user_mini_info();
+     user = JSON.parse(sessionStorage.getItem('user'));
+     var card_boday = document.getElementById('file-petition-b');
+    url = default_url + 'candidates/user/'+user.id;
+    make_request(url,'GET')
+    .then(function(response){
+        data = response.data
+        if(data!=null){
+            var office = document.getElementById('petition-office');
+            office.value = data.office_name +'('+data.office_type+')';
+            card_boday.classList.add('bg-light');
+        }else{
+            var form = document.getElementById('file-petition-form');
+            form.style.display='none';
+           
+            var msg = 'Only candidates can file Petitions for the seats they Run for';
+            
+            var text = document.createTextNode(msg);
+            
+            card_boday.appendChild(text);
+
+            card_boday.classList.add('bg-info');
+        }
+    });
+}
+function save_petition(event){
+    event.preventDefault();
+    data={
+      body:document.getElementById('petition-body').value,  
+      evidence:document.getElementById('petition-evidence').value,  
+    };
+      var card_boday = document.getElementById('file-petition-b');
+    url = default_url+'petitions';
+    make_request(url,'POST',data)
+    .then(function(response){
+        data = response.data;
+           var form = document.getElementById('file-petition-form');
+            form.style.display='none';
+        if (data!=null){      
+            var evidence  = document.createElement('p');
+                evidence.innerHTML='<b>Evidence:</b>'+data.evidence;
+            var body  = document.createElement('p');
+                body.innerHTML='<b>Description:</b>'+data.body;
+            var text = document.createTextNode(msg);
+            card_boday.appendChild(body);
+            card_boday.appendChild(evidence);
+            card_boday.classList.add('bg-light');
+            showMessage('Success, Petiton Filed');
+            }else{
+             var msg = document.createElement('p');
+                msg.innerHTML ='Fail, Petition not filed';
+                 card_boday.appendChild(msg);
+                card_boday.classList.remove('bg-info');
+                card_boday.classList.remove('bg-light');
+                card_boday.classList.add('bg-warning');
+            }
     });
 }
